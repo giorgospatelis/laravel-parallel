@@ -1,0 +1,161 @@
+name: PR Management
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+  pull_request_target:
+    types: [opened]
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  auto-label:
+    name: Auto-label PR
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Label PR based on changed files
+        uses: actions/labeler@v5
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          configuration-path: .github/labeler.yml
+
+      - name: Label PR by size
+        uses: codelytv/pr-size-labeler@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          xs_label: 'size: xs'
+          xs_max_size: 10
+          s_label: 'size: s'
+          s_max_size: 100
+          m_label: 'size: m'
+          m_max_size: 500
+          l_label: 'size: l'
+          l_max_size: 1000
+          xl_label: 'size: xl'
+
+  validate-pr-title:
+    name: Validate PR Title
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    timeout-minutes: 5
+
+    steps:
+      - name: Validate PR title format
+        uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            docs
+            style
+            refactor
+            perf
+            test
+            chore
+            ci
+            build
+          requireScope: false
+          subjectPattern: ^[A-Z].+$
+          subjectPatternError: |
+            The subject "{subject}" found in the pull request title "{title}"
+            didn't match the configured pattern. Please ensure that the subject
+            starts with an uppercase character.
+
+  welcome-first-time:
+    name: Welcome First-Time Contributors
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request_target' || (github.event_name == 'issues' && github.event.action == 'opened')
+    timeout-minutes: 5
+
+    steps:
+      - name: Welcome first-time contributors
+        uses: actions/first-interaction@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          pr-message: |
+            👋 Welcome and thank you for your first contribution to Laravel Parallel!
+
+            We're excited to have you as part of our community. Here are a few things to keep in mind:
+
+            - ✅ Please ensure all CI checks pass before requesting a review
+            - 📝 Update the CHANGELOG.md if your changes are user-facing
+            - 🧪 Add tests for new features or bug fixes
+            - 📚 Update documentation if needed
+
+            If you have any questions, feel free to ask! We're here to help.
+
+            ---
+            🤖 This is an automated message for first-time contributors.
+          issue-message: |
+            👋 Thank you for opening your first issue in Laravel Parallel!
+
+            We appreciate you taking the time to report this. Our team will review it as soon as possible.
+
+            Please ensure you've provided:
+            - ✅ A clear description of the issue
+            - 🔍 Steps to reproduce (if applicable)
+            - 💻 Your environment details (PHP version, Laravel version, etc.)
+            - 📝 Any relevant code samples or error messages
+
+            ---
+            🤖 This is an automated message for first-time contributors.
+
+  stale-pr:
+    name: Mark Stale PRs
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Mark stale PRs and issues
+        uses: actions/stale@v9
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          stale-pr-message: |
+            This pull request has been automatically marked as stale because it has not had
+            recent activity. It will be closed in 30 days if no further activity occurs.
+
+            If you believe this PR is still relevant, please:
+            - Rebase on the latest develop branch
+            - Respond to any review comments
+            - Add a comment explaining why this should remain open
+
+            Thank you for your contribution!
+          stale-issue-message: |
+            This issue has been automatically marked as stale because it has not had recent
+            activity. It will be closed in 30 days if no further activity occurs.
+
+            If you believe this issue is still relevant, please add a comment with:
+            - Updated reproduction steps if applicable
+            - Confirmation the issue still exists in the latest version
+            - Any additional context
+
+            Thank you for your report!
+          close-pr-message: |
+            This pull request has been automatically closed due to inactivity.
+
+            If you'd like to continue working on this, please feel free to open a new PR
+            with updated changes. Thank you for your contribution!
+          close-issue-message: |
+            This issue has been automatically closed due to inactivity.
+
+            If you believe this issue is still relevant, please feel free to open a new
+            issue with updated information. Thank you!
+          days-before-stale: 60
+          days-before-close: 30
+          stale-pr-label: 'stale'
+          stale-issue-label: 'stale'
+          exempt-pr-labels: 'keep-open,in-progress'
+          exempt-issue-labels: 'keep-open,pinned,security'

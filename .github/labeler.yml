@@ -1,0 +1,80 @@
+# Auto-labeling configuration for PRs based on changed files
+
+'core':
+  - changed-files:
+    - any-glob-to-any-file: 'src/Core/**/*'
+
+'contracts':
+  - changed-files:
+    - any-glob-to-any-file: 'src/Contracts/**/*'
+
+'tasks':
+  - changed-files:
+    - any-glob-to-any-file: 'src/Tasks/**/*'
+
+'workers':
+  - changed-files:
+    - any-glob-to-any-file: 'src/Workers/**/*'
+
+'results':
+  - changed-files:
+    - any-glob-to-any-file: 'src/Results/**/*'
+
+'exceptions':
+  - changed-files:
+    - any-glob-to-any-file: 'src/Exceptions/**/*'
+
+'support':
+  - changed-files:
+    - any-glob-to-any-file: 'src/Support/**/*'
+
+'config':
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/Config/**/*'
+      - 'config/**/*'
+
+'console':
+  - changed-files:
+    - any-glob-to-any-file: 'src/Console/**/*'
+
+'events':
+  - changed-files:
+    - any-glob-to-any-file: 'src/Events/**/*'
+
+'facade':
+  - changed-files:
+    - any-glob-to-any-file: 'src/Facades/**/*'
+
+'tests':
+  - changed-files:
+    - any-glob-to-any-file: 'tests/**/*'
+
+'documentation':
+  - changed-files:
+    - any-glob-to-any-file:
+      - '*.md'
+      - 'docs/**/*'
+      - '.github/**/*.md'
+
+'ci':
+  - changed-files:
+    - any-glob-to-any-file:
+      - '.github/workflows/**/*'
+      - '.github/dependabot.yml'
+      - '.github/labeler.yml'
+      - '.github/release-drafter.yml'
+
+'dependencies':
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'composer.json'
+      - 'composer.lock'
+
+'code-quality':
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'phpstan.neon.dist'
+      - 'phpstan-baseline.neon'
+      - 'pint.json'
+      - '.php-cs-fixer.php'

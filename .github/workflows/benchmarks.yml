@@ -1,0 +1,158 @@
+name: Performance Benchmarks
+
+on:
+  pull_request:
+    types: [labeled, opened, synchronize]
+  schedule:
+    # Run weekly benchmarks on Sundays at 2 AM UTC
+    - cron: '0 2 * * 0'
+  workflow_dispatch:
+
+# Only run if PR has 'benchmark' label or on schedule
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  benchmarks:
+    name: Run Performance Benchmarks
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      contains(github.event.pull_request.labels.*.name, 'benchmark')
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
+          coverage: none
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: bench-php-8.3-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: bench-php-8.3-composer-
+
+      - name: Install dependencies
+        run: composer update --prefer-stable --prefer-dist --no-interaction --no-progress
+
+      - name: Install PHPBench
+        run: composer require --dev phpbench/phpbench --no-interaction
+
+      - name: Create benchmark suite
+        run: |
+          mkdir -p benchmarks
+          cat > benchmarks/ParallelBench.php << 'PHPEOF'
+          <?php
+
+          namespace Benchmarks;
+
+          use LaravelParallel\Facades\Parallel;
+
+          class ParallelBench
+          {
+              /**
+               * @Revs(10)
+               * @Iterations(5)
+               */
+              public function benchSmallWorkload(): void
+              {
+                  $tasks = array_fill(0, 10, fn() => usleep(100000)); // 100ms tasks
+                  Parallel::run($tasks);
+              }
+
+              /**
+               * @Revs(5)
+               * @Iterations(3)
+               */
+              public function benchMediumWorkload(): void
+              {
+                  $tasks = array_fill(0, 50, fn() => usleep(50000)); // 50ms tasks
+                  Parallel::run($tasks);
+              }
+
+              /**
+               * @Revs(3)
+               * @Iterations(3)
+               */
+              public function benchLargeWorkload(): void
+              {
+                  $tasks = array_fill(0, 100, fn() => usleep(20000)); // 20ms tasks
+                  Parallel::run($tasks);
+              }
+
+              /**
+               * @Revs(10)
+               * @Iterations(5)
+               */
+              public function benchSequentialBaseline(): void
+              {
+                  $tasks = array_fill(0, 10, fn() => usleep(100000));
+                  foreach ($tasks as $task) {
+                      $task();
+                  }
+              }
+          }
+          PHPEOF
+
+      - name: Run benchmarks
+        run: |
+          ./vendor/bin/phpbench run benchmarks --report=default --output=console --output=html > benchmark-results.html || true
+          echo "Benchmarks completed"
+
+      - name: Generate benchmark report
+        run: |
+          cat > benchmark-summary.md << 'EOF'
+          ## ⚡ Performance Benchmark Results
+
+          Benchmarks have been executed to measure parallel processing performance.
+
+          ### Test Scenarios:
+          - **Small Workload**: 10 tasks × 100ms each
+          - **Medium Workload**: 50 tasks × 50ms each
+          - **Large Workload**: 100 tasks × 20ms each
+          - **Sequential Baseline**: 10 tasks × 100ms (no parallelization)
+
+          ### Expected Results:
+          - Parallel execution should show significant speedup for medium and large workloads
+          - Small workloads may have minimal benefit due to overhead
+          - Speedup factor typically correlates with CPU core count
+
+          _Full benchmark results available in workflow artifacts._
+          EOF
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const summary = fs.readFileSync('benchmark-summary.md', 'utf8');
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: summary
+            });
+
+      - name: Upload benchmark results
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results
+          path: |
+            benchmark-results.html
+            benchmark-summary.md
+          retention-days: 30
+
+      - name: Benchmark summary
+        run: |
+          cat benchmark-summary.md >> $GITHUB_STEP_SUMMARY

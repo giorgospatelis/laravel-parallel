@@ -1,0 +1,124 @@
+name-template: 'v$RESOLVED_VERSION'
+tag-template: 'v$RESOLVED_VERSION'
+
+categories:
+  - title: '🚀 Features'
+    labels:
+      - 'enhancement'
+      - 'feature'
+      - 'feat'
+  - title: '🐛 Bug Fixes'
+    labels:
+      - 'bug'
+      - 'fix'
+  - title: '📚 Documentation'
+    labels:
+      - 'documentation'
+      - 'docs'
+  - title: '🔒 Security'
+    labels:
+      - 'security'
+  - title: '⚡ Performance'
+    labels:
+      - 'performance'
+      - 'perf'
+  - title: '♻️ Refactoring'
+    labels:
+      - 'refactor'
+      - 'refactoring'
+  - title: '🧪 Tests'
+    labels:
+      - 'tests'
+      - 'test'
+  - title: '🔧 Maintenance'
+    labels:
+      - 'chore'
+      - 'dependencies'
+      - 'ci'
+
+change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+change-title-escapes: '\<*_&' # Escape special markdown characters
+
+version-resolver:
+  major:
+    labels:
+      - 'major'
+      - 'breaking'
+  minor:
+    labels:
+      - 'minor'
+      - 'enhancement'
+      - 'feature'
+  patch:
+    labels:
+      - 'patch'
+      - 'bug'
+      - 'fix'
+      - 'documentation'
+      - 'dependencies'
+  default: patch
+
+template: |
+  ## What's Changed
+
+  $CHANGES
+
+  **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
+
+  ## Installation
+
+  ```bash
+  composer require laravel-parallel/laravel-parallel:^$RESOLVED_VERSION
+  ```
+
+  ## Upgrade Guide
+
+  See [UPGRADE.md](https://github.com/$OWNER/$REPOSITORY/blob/main/UPGRADE.md) for detailed upgrade instructions.
+
+  ## Contributors
+
+  Thank you to all contributors who made this release possible! 🎉
+
+  $CONTRIBUTORS
+
+autolabeler:
+  - label: 'documentation'
+    files:
+      - '*.md'
+      - 'docs/**/*'
+  - label: 'dependencies'
+    files:
+      - 'composer.json'
+      - 'composer.lock'
+  - label: 'ci'
+    files:
+      - '.github/**/*'
+  - label: 'tests'
+    files:
+      - 'tests/**/*'
+  - label: 'core'
+    files:
+      - 'src/Core/**/*'
+
+exclude-labels:
+  - 'skip-changelog'
+  - 'duplicate'
+  - 'invalid'
+  - 'wontfix'
+
+replacers:
+  # Convert conventional commit prefixes to proper labels
+  - search: '/^feat(\(.+\))?:/i'
+    replace: '[Feature]'
+  - search: '/^fix(\(.+\))?:/i'
+    replace: '[Fix]'
+  - search: '/^docs(\(.+\))?:/i'
+    replace: '[Docs]'
+  - search: '/^perf(\(.+\))?:/i'
+    replace: '[Performance]'
+  - search: '/^refactor(\(.+\))?:/i'
+    replace: '[Refactor]'
+  - search: '/^test(\(.+\))?:/i'
+    replace: '[Tests]'
+  - search: '/^chore(\(.+\))?:/i'
+    replace: '[Chore]'

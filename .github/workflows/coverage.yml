@@ -1,0 +1,81 @@
+name: Code Coverage
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+# Cancel outdated workflow runs
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  coverage:
+    name: Generate Code Coverage Report
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP with PCOV
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
+          coverage: pcov
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: coverage-php-8.3-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: coverage-php-8.3-composer-
+
+      - name: Install dependencies
+        run: composer update --prefer-stable --prefer-dist --no-interaction --no-progress
+
+      - name: Run test suite with coverage
+        run: composer test:coverage-clover
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./clover.xml
+          flags: unittests
+          name: codecov-laravel-parallel
+          fail_ci_if_error: true
+          verbose: true
+
+      - name: Check coverage threshold
+        run: |
+          coverage=$(php -r "
+            \$xml = simplexml_load_file('clover.xml');
+            \$metrics = \$xml->project->metrics;
+            \$lines = (int)\$metrics['coveredstatements'];
+            \$total = (int)\$metrics['statements'];
+            echo round((\$lines / \$total) * 100, 2);
+          ")
+          echo "Coverage: ${coverage}%"
+          if (( $(echo "$coverage < 80" | bc -l) )); then
+            echo "❌ Coverage $coverage% is below minimum threshold of 80%"
+            exit 1
+          fi
+          echo "✅ Coverage $coverage% meets minimum threshold of 80%"
+
+      - name: Generate coverage summary
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "## 📊 Code Coverage Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Coverage report has been uploaded to Codecov." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "View detailed report at: https://codecov.io/gh/${{ github.repository }}" >> $GITHUB_STEP_SUMMARY
