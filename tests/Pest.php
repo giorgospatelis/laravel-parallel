@@ -17,12 +17,37 @@ pest()->extend(LaravelParallel\Tests\TestCase::class)
  // ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
     ->in('Feature');
 
-// Core and integration tests need Laravel's test case for config
+// Core tests need Laravel's test case for config and mocking
 pest()->extend(LaravelParallel\Tests\TestCase::class)
     ->in('Unit/Core');
 
-// Unit tests don't need Laravel's test case
-pest()->in('Unit');
+// Worker tests need Laravel's test case for mocking
+pest()->extend(LaravelParallel\Tests\TestCase::class)
+    ->in('Unit/Workers');
+
+// Support tests need Laravel's test case for config
+pest()->extend(LaravelParallel\Tests\TestCase::class)
+    ->in('Unit/Support');
+
+// Tasks tests need Laravel's test case for serialization support
+pest()->extend(LaravelParallel\Tests\TestCase::class)
+    ->in('Unit/Tasks');
+
+// Config tests need Laravel's test case for config helper
+pest()->extend(LaravelParallel\Tests\TestCase::class)
+    ->in('Unit/Config');
+
+// Events tests need Laravel's test case for event dispatching
+pest()->extend(LaravelParallel\Tests\TestCase::class)
+    ->in('Unit/Events');
+
+// Console tests need Laravel's test case for artisan testing
+pest()->extend(LaravelParallel\Tests\TestCase::class)
+    ->in('Unit/Console');
+
+// Other Unit tests (Exceptions, Results) use default PHPUnit TestCase
+pest()->in('Unit/Exceptions');
+pest()->in('Unit/Results');
 
 /*
 |--------------------------------------------------------------------------

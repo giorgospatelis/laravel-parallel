@@ -34,7 +34,7 @@ abstract class AbstractTask implements TaskContract
     /**
      * Ensure ID is generated before serialization if it was accessed.
      */
-    final public function __serialize(): array
+    public function __serialize(): array
     {
         return [
             'id' => $this->id, // Preserve the ID if it was set
@@ -44,7 +44,7 @@ abstract class AbstractTask implements TaskContract
     /**
      * Restore ID after unserialization.
      */
-    final public function __unserialize(array $data): void
+    public function __unserialize(array $data): void
     {
         $this->id = $data['id'] ?? null;
     }

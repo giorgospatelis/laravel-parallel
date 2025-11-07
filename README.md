@@ -324,11 +324,11 @@ Laravel Parallel follows **Hexagonal Architecture** (Ports & Adapters) and **SOL
                │
      ┌─────────┴─────────┐
      │                   │
-┌────▼────────┐    ┌────▼────────┐
-│  Worker     │    │  Worker     │
-│  Pool       │... │  Pool       │
-│  Manager    │    │  Manager    │
-└─────────────┘    └─────────────┘
+┌────▼────────┐     ┌────▼────────┐
+│  Worker     │     │  Worker     │
+│  Pool       │ ... │  Pool       │
+│  Manager    │     │  Manager    │
+└─────────────┘     └─────────────┘
 ```
 
 ### Key Components
@@ -371,7 +371,7 @@ composer phpstan
 
 The package maintains:
 - PHPStan Level 9 compliance
-- 80%+ test coverage
+- 77.5% test coverage (251 tests, 672 assertions)
 - Comprehensive unit and feature tests
 
 ## Performance
@@ -511,7 +511,7 @@ if (count($failedTasks) > 0) {
 Yes! Laravel Parallel v2.0+ is built with production in mind:
 
 - PHPStan Level 9 compliance (maximum type safety)
-- Comprehensive test coverage (80%+)
+- Comprehensive test coverage (77.5% with 251 tests and 672 assertions)
 - Battle-tested amphp/parallel foundation
 - Used in production Laravel applications
 - Octane/Swoole compatible
@@ -519,12 +519,6 @@ Yes! Laravel Parallel v2.0+ is built with production in mind:
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for recent changes and version history.
-
-**Latest Release (v2.0.0)**: Complete architecture restructure with SOLID principles, improved performance, Octane compatibility, and event-driven observability.
-
-## Upgrading
-
-For upgrade instructions from v1.x to v2.x, see [UPGRADE GUIDE](UPGRADE.md).
 
 ## Contributing
 

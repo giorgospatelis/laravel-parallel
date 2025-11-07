@@ -2,18 +2,22 @@
 
 declare(strict_types=1);
 
-use LaravelParallel\Support\CpuDetector;
-use LaravelParallel\Workers\WorkerConfiguration;
-use LaravelParallel\Workers\WorkerPoolFactory;
 use LaravelParallel\Workers\WorkerPoolManager;
 
 beforeEach(function () {
-    $cpuDetector = new CpuDetector();
-    $factory = new WorkerPoolFactory($cpuDetector);
-    $config = new WorkerConfiguration(workerCount: 4);
-    $pool = $factory->create($config);
+    // Use a synchronous mock worker pool to avoid spawning real processes
+    // This makes tests compatible with code coverage tools like PCOV
+    $pool = $this->createTestWorkerPool(4);
 
     $this->manager = new WorkerPoolManager($pool, 4);
+});
+
+afterEach(function () {
+    // Ensure worker pool is shut down after each test
+    // This prevents orphaned processes from blocking code coverage collection
+    if (isset($this->manager) && $this->manager->isRunning()) {
+        $this->manager->shutdown();
+    }
 });
 
 it('reports the correct worker count', function () {
@@ -41,4 +45,12 @@ it('can safely shutdown multiple times', function () {
 
 it('implements WorkerPoolContract', function () {
     expect($this->manager)->toBeInstanceOf(LaravelParallel\Contracts\WorkerPoolContract::class);
+});
+
+it('can submit tasks to pool', function () {
+    $task = new LaravelParallel\Tasks\ClosureTask(fn () => 'test result');
+
+    $execution = $this->manager->submit($task);
+
+    expect($execution)->toBeInstanceOf(Amp\Parallel\Worker\Execution::class);
 });

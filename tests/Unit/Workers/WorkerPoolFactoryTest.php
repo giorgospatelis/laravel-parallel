@@ -16,6 +16,9 @@ it('creates a worker pool with explicit worker count', function () {
     $pool = $this->factory->create($config);
 
     expect($pool)->toBeInstanceOf(Amp\Parallel\Worker\WorkerPool::class);
+
+    // Clean up pool
+    $pool->shutdown();
 });
 
 it('creates a worker pool with auto-detected CPU count', function () {
@@ -24,6 +27,9 @@ it('creates a worker pool with auto-detected CPU count', function () {
     $pool = $this->factory->create($config);
 
     expect($pool)->toBeInstanceOf(Amp\Parallel\Worker\WorkerPool::class);
+
+    // Clean up pool
+    $pool->shutdown();
 });
 
 it('creates separate pool instances with different configurations', function () {
@@ -65,4 +71,48 @@ it('uses auto-detected CPU cores when worker count is 0', function () {
 
     // Clean up
     $pool->shutdown();
+});
+
+it('creates pool with timeout configuration', function () {
+    $config = new WorkerConfiguration(workerCount: 4, timeout: 30.0);
+    $pool = $this->factory->create($config);
+
+    expect($pool)->toBeInstanceOf(Amp\Parallel\Worker\WorkerPool::class);
+
+    // Clean up
+    $pool->shutdown();
+});
+
+it('handles pool creation when worker count is exactly 1', function () {
+    $config = new WorkerConfiguration(workerCount: 1);
+    $pool = $this->factory->create($config);
+
+    expect($pool->getLimit())->toBe(1);
+
+    // Clean up
+    $pool->shutdown();
+});
+
+it('creates pool with maximum configured workers', function () {
+    $config = new WorkerConfiguration(workerCount: 128, maxWorkers: 128);
+    $pool = $this->factory->create($config);
+
+    expect($pool->getLimit())->toBe(128);
+
+    // Clean up
+    $pool->shutdown();
+});
+
+it('creates new pool instances on each call', function () {
+    $config = new WorkerConfiguration(workerCount: 4);
+
+    $pool1 = $this->factory->create($config);
+    $pool2 = $this->factory->create($config);
+
+    // Should be different instances even with same config
+    expect($pool1)->not->toBe($pool2);
+
+    // Clean up
+    $pool1->shutdown();
+    $pool2->shutdown();
 });

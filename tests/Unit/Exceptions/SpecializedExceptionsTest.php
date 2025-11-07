@@ -16,7 +16,7 @@ describe('TaskException', function () {
     });
 
     it('creates serialization failed exception', function () {
-        $previous = new RuntimeException('Serialization error');
+        $previous = new \RuntimeException('Serialization error');
         $exception = TaskException::serializationFailed('task1', $previous);
 
         expect($exception->getMessage())->toContain('task1')
@@ -61,7 +61,7 @@ describe('WorkerPoolException', function () {
     });
 
     it('creates worker crashed exception', function () {
-        $previous = new RuntimeException('Crash');
+        $previous = new \RuntimeException('Crash');
         $exception = WorkerPoolException::workerCrashed(5, $previous);
 
         expect($exception->getMessage())->toContain('5')
@@ -70,7 +70,7 @@ describe('WorkerPoolException', function () {
     });
 
     it('creates initialization failed exception', function () {
-        $previous = new RuntimeException('Init error');
+        $previous = new \RuntimeException('Init error');
         $exception = WorkerPoolException::initializationFailed($previous);
 
         expect($exception->getMessage())->toContain('initialize')
@@ -110,7 +110,7 @@ describe('SerializationException', function () {
     });
 
     it('creates closure not serializable exception', function () {
-        $previous = new RuntimeException('Cannot serialize');
+        $previous = new \RuntimeException('Cannot serialize');
         $exception = SerializationException::closureNotSerializable($previous);
 
         expect($exception->getMessage())->toContain('Closure')
@@ -126,7 +126,7 @@ describe('SerializationException', function () {
     });
 
     it('creates unserialization failed exception', function () {
-        $previous = new RuntimeException('Bad data');
+        $previous = new \RuntimeException('Bad data');
         $exception = SerializationException::unserializationFailed($previous);
 
         expect($exception->getMessage())->toContain('unserialize')

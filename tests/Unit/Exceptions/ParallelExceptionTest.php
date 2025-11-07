@@ -55,3 +55,44 @@ it('creates worker pool creation failed exception', function () {
         ->toContain('Pool error')
         ->and($exception->getPrevious())->toBe($previous);
 });
+
+it('creates too many tasks exception', function () {
+    $exception = ParallelException::tooManyTasks(15000, 10000);
+
+    expect($exception->getMessage())
+        ->toContain('15000')
+        ->toContain('10000')
+        ->toContain('Too many tasks')
+        ->toContain('auto-chunking');
+});
+
+it('can be constructed with message only', function () {
+    $exception = new ParallelException('Test message');
+
+    expect($exception->getMessage())->toBe('Test message')
+        ->and($exception->getCode())->toBe(0)
+        ->and($exception->getPrevious())->toBeNull();
+});
+
+it('can be constructed with message and code', function () {
+    $exception = new ParallelException('Test message', 42);
+
+    expect($exception->getMessage())->toBe('Test message')
+        ->and($exception->getCode())->toBe(42)
+        ->and($exception->getPrevious())->toBeNull();
+});
+
+it('can be constructed with message code and previous', function () {
+    $previous = new RuntimeException('Previous error');
+    $exception = new ParallelException('Test message', 42, $previous);
+
+    expect($exception->getMessage())->toBe('Test message')
+        ->and($exception->getCode())->toBe(42)
+        ->and($exception->getPrevious())->toBe($previous);
+});
+
+it('extends RuntimeException', function () {
+    $exception = new ParallelException('Test');
+
+    expect($exception)->toBeInstanceOf(RuntimeException::class);
+});

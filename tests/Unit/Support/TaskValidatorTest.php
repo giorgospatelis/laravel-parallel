@@ -127,3 +127,45 @@ describe('validateAll', function () {
             ->toThrow(ParallelException::class, 'Invalid closure');
     });
 });
+
+describe('validateTaskCount', function () {
+    it('accepts task count within limits', function () {
+        config(['parallel.max_tasks_per_batch' => 100]);
+        config(['parallel.auto_chunk' => false]);
+
+        expect(fn () => $this->validator->validateTaskCount(50))
+            ->not->toThrow(ParallelException::class);
+    });
+
+    it('throws exception when exceeding max tasks with auto-chunk disabled', function () {
+        config(['parallel.max_tasks_per_batch' => 100]);
+        config(['parallel.auto_chunk' => false]);
+
+        expect(fn () => $this->validator->validateTaskCount(150))
+            ->toThrow(ParallelException::class, 'Too many tasks submitted');
+    });
+
+    it('allows exceeding max tasks when auto-chunk is enabled', function () {
+        config(['parallel.max_tasks_per_batch' => 100]);
+        config(['parallel.auto_chunk' => true]);
+
+        expect(fn () => $this->validator->validateTaskCount(150))
+            ->not->toThrow(ParallelException::class);
+    });
+
+    it('allows unlimited tasks when max_tasks_per_batch is 0', function () {
+        config(['parallel.max_tasks_per_batch' => 0]);
+        config(['parallel.auto_chunk' => false]);
+
+        expect(fn () => $this->validator->validateTaskCount(100000))
+            ->not->toThrow(ParallelException::class);
+    });
+
+    it('allows unlimited tasks when max_tasks_per_batch is negative', function () {
+        config(['parallel.max_tasks_per_batch' => -1]);
+        config(['parallel.auto_chunk' => false]);
+
+        expect(fn () => $this->validator->validateTaskCount(100000))
+            ->not->toThrow(ParallelException::class);
+    });
+});
