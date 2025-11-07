@@ -1,0 +1,67 @@
+{
+    "name": "laravel-parallel/laravel-parallel",
+    "description": "Simple parallel processing for Laravel - Powered by AMPHP with automatic CPU detection.",
+    "keywords": ["laravel", "parallel", "async", "concurrent", "amphp", "multi-processing"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Giorgos Patelis",
+            "email": "giorgospatelis@outlook.com"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "illuminate/support": "^11.0|^12.0",
+        "illuminate/contracts": "^11.0|^12.0",
+        "amphp/parallel": "^2.3",
+        "laravel/serializable-closure": "^2.0"
+    },
+    "require-dev": {
+        "larastan/larastan": "^3.0",
+        "laravel/pint": "^1.0",
+        "orchestra/testbench": "^9.0|^10.0",
+        "pestphp/pest": "^3.0|^4.0",
+        "pestphp/pest-plugin-laravel": "^3.0|^4.0",
+        "pestphp/pest-plugin-type-coverage": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "LaravelParallel\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LaravelParallel\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/pest",
+        "test:coverage": "vendor/bin/pest --coverage --min=80",
+        "test:coverage-html": "vendor/bin/pest --coverage-html coverage-html",
+        "test:coverage-clover": "vendor/bin/pest --coverage-clover clover.xml",
+        "phpstan": "vendor/bin/phpstan analyse",
+        "format": "vendor/bin/pint",
+        "format:test": "vendor/bin/pint --test"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        },
+        "optimize-autoloader": true,
+        "preferred-install": "dist"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "LaravelParallel\\ParallelServiceProvider"
+            ],
+            "aliases": {
+                "Parallel": "LaravelParallel\\Facades\\Parallel"
+            }
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

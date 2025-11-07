@@ -1,0 +1,48 @@
+includes:
+    - ./vendor/larastan/larastan/extension.neon
+
+parameters:
+    level: 8
+
+    paths:
+        - src
+        - config
+        - tests
+
+    excludePaths:
+        - tests/Pest.php
+
+    # Ignore errors
+    ignoreErrors:
+        # Pest testing framework
+        - '#Function (test|it|describe|beforeEach|afterEach)\(\) invoked with \d+ parameters?, 0 required\.#'
+
+        # Serializable closures - expected behavior for parallel processing
+        - '#Closure invoked with \d+ parameters?, 0 required\.#'
+        - '#Parameter \#\d+ \$.*? of method .*?::.*?\(\) expects Closure, Laravel\\SerializableClosure\\SerializableClosure given\.#'
+
+        # amphp/parallel specific - dynamic parallel execution patterns
+        - '#Call to method submit\(\) on an unknown class Amp\\Parallel\\Worker\\Worker\.#'
+        - '#Parameter .* of method .* expects callable\(\): mixed, Closure given\.#'
+
+    # Enable stricter analysis
+    treatPhpDocTypesAsCertain: true
+    reportUnmatchedIgnoredErrors: false
+    checkExplicitMixedMissingReturn: true
+    checkFunctionNameCase: true
+    checkInternalClassCaseSensitivity: true
+
+    # Unused variable/parameter detection
+    checkTooWideReturnTypesInProtectedAndPublicMethods: true
+    checkUninitializedProperties: true
+    checkDynamicProperties: true
+
+    # PHP 8.2+ features
+    polluteScopeWithLoopInitialAssignments: false
+    polluteScopeWithAlwaysIterableForeach: false
+
+    # Parallel analysis optimization
+    parallel:
+        jobSize: 20
+        maximumNumberOfProcesses: 4
+        minimumNumberOfJobsPerProcess: 2

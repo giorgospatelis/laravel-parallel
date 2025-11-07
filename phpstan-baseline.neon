@@ -1,0 +1,181 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''\.$#'
+			identifier: larastan.noEnvCallsOutsideOfConfig
+			count: 3
+			path: config/parallel.php
+
+		-
+			message: '#^Cannot call method getMessage\(\) on Throwable\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Console/ParallelTestCommand.php
+
+		-
+			message: '#^Method LaravelParallel\\Console\\ParallelTestCommand\:\:displayResults\(\) has parameter \$results with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Console/ParallelTestCommand.php
+
+		-
+			message: '#^Call to an undefined method LaravelParallel\\Contracts\\ExecutorContract\:\:setWorkerCount\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Core/ParallelManager.php
+
+		-
+			message: '#^Method LaravelParallel\\Core\\ParallelManager\:\:run\(\) should return array\<int\|string, LaravelParallel\\Results\\ParallelResult\> but returns array\<int\|string, LaravelParallel\\Contracts\\ResultContract\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Core/ParallelManager.php
+
+		-
+			message: '#^Method LaravelParallel\\Events\\TaskCompleted\:\:__construct\(\) has parameter \$task with generic interface LaravelParallel\\Contracts\\TaskContract but does not specify its types\: TReceive, TSend, TResult$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Events/TaskCompleted.php
+
+		-
+			message: '#^Method LaravelParallel\\Events\\TaskFailed\:\:__construct\(\) has parameter \$task with generic interface LaravelParallel\\Contracts\\TaskContract but does not specify its types\: TReceive, TSend, TResult$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Events/TaskFailed.php
+
+		-
+			message: '#^Method LaravelParallel\\Events\\TaskStarted\:\:__construct\(\) has parameter \$task with generic interface LaravelParallel\\Contracts\\TaskContract but does not specify its types\: TReceive, TSend, TResult$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Events/TaskStarted.php
+
+		-
+			message: '#^Class LaravelParallel\\Facades\\Parallel has PHPDoc tag @method for method map\(\) parameter \#1 \$items with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Facades/Parallel.php
+
+		-
+			message: '#^Class LaravelParallel\\Facades\\Parallel has PHPDoc tag @method for method run\(\) parameter \#1 \$closures with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Facades/Parallel.php
+
+		-
+			message: '#^Parameter \$maxExecutionTime of class LaravelParallel\\Results\\ExecutionMetrics constructor expects float, float\|LaravelParallel\\Contracts\\ResultContract given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Results/ExecutionMetrics.php
+
+		-
+			message: '#^Parameter \$minExecutionTime of class LaravelParallel\\Results\\ExecutionMetrics constructor expects float, float\|LaravelParallel\\Contracts\\ResultContract given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Results/ExecutionMetrics.php
+
+		-
+			message: '#^Method LaravelParallel\\Results\\ResultCollection\:\:exceptions\(\) should return Illuminate\\Support\\Collection\<\(int\|string\), Throwable\> but returns LaravelParallel\\Results\\ResultCollection\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Results/ResultCollection.php
+
+		-
+			message: '#^Access to an undefined property PHPUnit\\Framework\\TestCase\:\:\$cpuDetector\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Core/ExecutorTest.php
+
+		-
+			message: '#^Access to an undefined property PHPUnit\\Framework\\TestCase\:\:\$executor\.$#'
+			identifier: property.notFound
+			count: 10
+			path: tests/Unit/Core/ExecutorTest.php
+
+		-
+			message: '#^Access to an undefined property PHPUnit\\Framework\\TestCase\:\:\$poolFactory\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Core/ExecutorTest.php
+
+		-
+			message: '#^Access to an undefined property PHPUnit\\Framework\\TestCase\:\:\$resultCollector\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Core/ExecutorTest.php
+
+		-
+			message: '#^Access to an undefined property PHPUnit\\Framework\\TestCase\:\:\$validator\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Core/ExecutorTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function expect$#'
+			identifier: argument.templateType
+			count: 1
+			path: tests/Unit/Core/ExecutorTest.php
+
+		-
+			message: '#^Access to an undefined property PHPUnit\\Framework\\TestCase\:\:\$manager\.$#'
+			identifier: property.notFound
+			count: 9
+			path: tests/Unit/Core/ParallelManagerTest.php
+
+		-
+			message: '#^Access to an undefined property PHPUnit\\Framework\\TestCase\:\:\$failedResult1\.$#'
+			identifier: property.notFound
+			count: 11
+			path: tests/Unit/Results/ResultCollectionTest.php
+
+		-
+			message: '#^Access to an undefined property PHPUnit\\Framework\\TestCase\:\:\$failedResult2\.$#'
+			identifier: property.notFound
+			count: 3
+			path: tests/Unit/Results/ResultCollectionTest.php
+
+		-
+			message: '#^Access to an undefined property PHPUnit\\Framework\\TestCase\:\:\$successfulResult1\.$#'
+			identifier: property.notFound
+			count: 14
+			path: tests/Unit/Results/ResultCollectionTest.php
+
+		-
+			message: '#^Access to an undefined property PHPUnit\\Framework\\TestCase\:\:\$successfulResult2\.$#'
+			identifier: property.notFound
+			count: 8
+			path: tests/Unit/Results/ResultCollectionTest.php
+
+		-
+			message: '#^Cannot call method getMessage\(\) on Throwable\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Unit/Results/ResultCollectionTest.php
+
+		-
+			message: '#^Access to an undefined property PHPUnit\\Framework\\TestCase\:\:\$validator\.$#'
+			identifier: property.notFound
+			count: 20
+			path: tests/Unit/Support/TaskValidatorTest.php
+
+		-
+			message: '#^Access to an undefined property PHPUnit\\Framework\\TestCase\:\:\$cpuDetector\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Workers/WorkerPoolFactoryTest.php
+
+		-
+			message: '#^Access to an undefined property PHPUnit\\Framework\\TestCase\:\:\$factory\.$#'
+			identifier: property.notFound
+			count: 5
+			path: tests/Unit/Workers/WorkerPoolFactoryTest.php
+
+		-
+			message: '#^Access to an undefined property PHPUnit\\Framework\\TestCase\:\:\$manager\.$#'
+			identifier: property.notFound
+			count: 10
+			path: tests/Unit/Workers/WorkerPoolManagerTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function expect$#'
+			identifier: argument.templateType
+			count: 1
+			path: tests/Unit/Workers/WorkerPoolManagerTest.php
