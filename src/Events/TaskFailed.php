@@ -18,5 +18,6 @@ final class TaskFailed
         public readonly string|int $taskKey,
         public readonly Throwable $exception,
         public readonly float $executionTime,
-    ) {}
+    ) {
+    }
 }

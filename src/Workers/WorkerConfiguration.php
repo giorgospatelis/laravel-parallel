@@ -25,7 +25,8 @@ final readonly class WorkerConfiguration
         public int $workerCount,
         public int $maxWorkers = 128,
         public ?float $timeout = null,
-    ) {}
+    ) {
+    }
 
     /**
      * Create a configuration from application config values.

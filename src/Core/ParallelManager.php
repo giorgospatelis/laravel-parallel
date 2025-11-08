@@ -33,7 +33,8 @@ final class ParallelManager
     public function __construct(
         private readonly ExecutorContract $executor,
         private readonly TaskValidator $validator,
-    ) {}
+    ) {
+    }
 
     /**
      * Create a new ParallelManager instance.

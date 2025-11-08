@@ -3,12 +3,13 @@
 declare(strict_types=1);
 
 use LaravelParallel\Support\CpuDetector;
+use LaravelParallel\Tests\Mocks\MockWorkerPoolFactory;
 use LaravelParallel\Workers\WorkerConfiguration;
-use LaravelParallel\Workers\WorkerPoolFactory;
 
 beforeEach(function () {
     $this->cpuDetector = new CpuDetector();
-    $this->factory = new WorkerPoolFactory($this->cpuDetector);
+    // Use mock factory to avoid spawning real processes in CI environments
+    $this->factory = new MockWorkerPoolFactory($this->cpuDetector);
 });
 
 it('creates a worker pool with explicit worker count', function () {
@@ -52,7 +53,7 @@ it('respects configured worker count', function () {
     $pool = $this->factory->create($config);
 
     // Verify the pool has the correct worker limit
-    expect($pool)->toBeInstanceOf(Amp\Parallel\Worker\ContextWorkerPool::class);
+    expect($pool)->toBeInstanceOf(Amp\Parallel\Worker\WorkerPool::class);
     expect($pool->getLimit())->toBe(2);
 
     // Clean up

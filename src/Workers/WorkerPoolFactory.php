@@ -23,7 +23,8 @@ class WorkerPoolFactory
 {
     public function __construct(
         private readonly CpuDetector $cpuDetector,
-    ) {}
+    ) {
+    }
 
     /**
      * Create a worker pool from configuration.

@@ -29,7 +29,8 @@ final class ParallelResult implements ResultContract
         private readonly ?Throwable $exception = null,
         private readonly float $executionTime = 0.0,
         private readonly bool $isSuccess = true,
-    ) {}
+    ) {
+    }
 
     /**
      * Create a failed result with an exception.

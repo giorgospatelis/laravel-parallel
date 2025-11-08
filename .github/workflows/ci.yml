@@ -61,7 +61,14 @@ jobs:
           APP_ENV: testing
           DB_CONNECTION: sqlite
           DB_DATABASE: ":memory:"
-        run: composer test
+        run: |
+          echo "=== Environment Info ==="
+          php -v
+          composer show laravel/framework | head -5
+          composer show orchestra/testbench | head -5
+          composer show pestphp/pest | head -5
+          echo "=== Running Tests ==="
+          composer test
 
   code-quality:
     name: Code Quality - PHPStan & Pint

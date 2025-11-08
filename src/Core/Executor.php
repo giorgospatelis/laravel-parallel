@@ -38,7 +38,8 @@ final class Executor implements ExecutorContract
         private readonly WorkerPoolFactory $poolFactory,
         private readonly ResultCollector $resultCollector,
         private readonly TaskValidator $validator,
-    ) {}
+    ) {
+    }
 
     /**
      * Destructor ensures worker pool is properly shutdown.

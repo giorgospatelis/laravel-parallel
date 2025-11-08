@@ -16,5 +16,6 @@ final class TaskStarted
     public function __construct(
         public readonly string|int $taskKey,
         public readonly float $startedAt,
-    ) {}
+    ) {
+    }
 }

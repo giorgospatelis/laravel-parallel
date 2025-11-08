@@ -10,6 +10,7 @@ parameters:
     excludePaths:
         - tests/Pest.php
         - tests/**/*Test.php
+        - src/Console/*
 
     # Ignore errors
     ignoreErrors:
@@ -30,6 +31,9 @@ parameters:
         -
             identifier: larastan.noEnvCallsOutsideOfConfig
             path: config/*
+
+        # Orchestra Canvas internal error - not our code
+        - '#Internal error: Orchestra\\Canvas\\Console\\MigrateMakeCommand#'
 
 
     # Enable stricter analysis

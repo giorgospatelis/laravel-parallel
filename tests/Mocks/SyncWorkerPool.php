@@ -27,7 +27,8 @@ final class SyncWorkerPool implements WorkerPool
 
     public function __construct(
         private readonly int $workerLimit,
-    ) {}
+    ) {
+    }
 
     /**
      * Get the number of idle workers.

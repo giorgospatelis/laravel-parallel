@@ -17,5 +17,6 @@ final class TaskCompleted
         public readonly string|int $taskKey,
         public readonly mixed $result,
         public readonly float $executionTime,
-    ) {}
+    ) {
+    }
 }

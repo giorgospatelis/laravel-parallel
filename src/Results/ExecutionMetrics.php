@@ -31,7 +31,8 @@ final readonly class ExecutionMetrics
         public float $averageExecutionTime,
         public float $minExecutionTime,
         public float $maxExecutionTime,
-    ) {}
+    ) {
+    }
 
     /**
      * Create metrics from a result collection.
