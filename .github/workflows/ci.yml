@@ -57,6 +57,10 @@ jobs:
           composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-progress
 
       - name: Run test suite
+        env:
+          APP_ENV: testing
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ":memory:"
         run: composer test
 
   code-quality:

@@ -6,7 +6,6 @@ parameters:
 
     paths:
         - src
-        - config
         - tests
 
     excludePaths:
@@ -24,6 +23,14 @@ parameters:
         # amphp/parallel specific - dynamic parallel execution patterns
         - '#Call to method submit\(\) on an unknown class Amp\\Parallel\\Worker\\Worker\.#'
         - '#Parameter .* of method .* expects callable\(\): mixed, Closure given\.#'
+
+        # Config files are ALLOWED to use env() - this is Laravel's standard pattern
+        # PHPStan/Larastan incorrectly flags this as an error
+        # See: https://laravel.com/docs/11.x/configuration#environment-configuration
+        -
+            identifier: larastan.noEnvCallsOutsideOfConfig
+            path: config/*
+
 
     # Enable stricter analysis
     treatPhpDocTypesAsCertain: true
