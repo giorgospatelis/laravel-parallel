@@ -35,7 +35,7 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/pest",
+        "test": "vendor/bin/pest --display-errors --display-warnings --display-deprecations",
         "test:coverage": "vendor/bin/pest --coverage --min=80",
         "test:coverage-html": "vendor/bin/pest --coverage-html coverage-html",
         "test:coverage-clover": "vendor/bin/pest --coverage-clover=clover.xml",
