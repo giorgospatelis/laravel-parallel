@@ -53,7 +53,7 @@ final class ParallelTestCommand extends Command
     }
 
     /**
-     * @param array<int|string, \LaravelParallel\Contracts\ResultContract> $results
+     * @param  array<int|string, \LaravelParallel\Contracts\ResultContract>  $results
      */
     private function displayResults(array $results, float $totalTime): void
     {

@@ -6,7 +6,6 @@ namespace LaravelParallel\Tests\Mocks;
 
 use Amp\Parallel\Worker\WorkerPool;
 use LaravelParallel\Exceptions\ParallelException;
-use LaravelParallel\Support\CpuDetector;
 use LaravelParallel\Workers\WorkerConfiguration;
 use LaravelParallel\Workers\WorkerPoolFactory;
 use Throwable;
@@ -46,5 +45,4 @@ final class MockWorkerPoolFactory extends WorkerPoolFactory
             throw ParallelException::workerPoolCreationFailed($e);
         }
     }
-
 }

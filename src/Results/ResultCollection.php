@@ -50,11 +50,11 @@ final class ResultCollection extends Collection
     /**
      * Get all exceptions from failed results.
      *
-     * @return \Illuminate\Support\Collection<int|string, \Throwable>
+     * @return Collection<int|string, Throwable>
      */
-    public function exceptions(): \Illuminate\Support\Collection
+    public function exceptions(): Collection
     {
-        /** @var \Illuminate\Support\Collection<int|string, \Throwable> $exceptions */
+        /** @var Collection<int|string, Throwable> $exceptions */
         $exceptions = $this->failed()
             ->map(fn (ResultContract $result) => $result->getException())
             ->filter();

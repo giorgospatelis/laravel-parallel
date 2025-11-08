@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-use LaravelParallel\Tasks\AbstractTask;
 use LaravelParallel\Contracts\TaskContract;
+use LaravelParallel\Tasks\AbstractTask;
 
 beforeEach(function () {
     $this->task = new class extends AbstractTask
     {
-        public function run(\Amp\Sync\Channel $channel, \Amp\Cancellation $cancellation): mixed
+        public function run(Amp\Sync\Channel $channel, Amp\Cancellation $cancellation): mixed
         {
             return 'test result';
         }
@@ -40,7 +40,7 @@ it('returns same ID on multiple calls', function () {
 it('generates different IDs for different instances', function () {
     $task2 = new class extends AbstractTask
     {
-        public function run(\Amp\Sync\Channel $channel, \Amp\Cancellation $cancellation): mixed
+        public function run(Amp\Sync\Channel $channel, Amp\Cancellation $cancellation): mixed
         {
             return 'test result 2';
         }
@@ -72,14 +72,14 @@ it('supports isSerializable method', function () {
 it('supports custom ID generation', function () {
     $customTask = new class extends AbstractTask
     {
+        public function run(Amp\Sync\Channel $channel, Amp\Cancellation $cancellation): mixed
+        {
+            return 'result';
+        }
+
         protected function generateId(): string
         {
             return 'custom_id_123';
-        }
-
-        public function run(\Amp\Sync\Channel $channel, \Amp\Cancellation $cancellation): mixed
-        {
-            return 'result';
         }
     };
 

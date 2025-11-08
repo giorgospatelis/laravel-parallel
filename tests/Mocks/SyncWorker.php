@@ -8,6 +8,8 @@ use Amp\Cancellation;
 use Amp\Parallel\Worker\Execution;
 use Amp\Parallel\Worker\Task;
 use Amp\Parallel\Worker\Worker;
+use Error;
+use Throwable;
 
 /**
  * Synchronous mock implementation of Worker for testing.
@@ -20,20 +22,53 @@ final class SyncWorker implements Worker
     private bool $isRunning = true;
 
     /**
+     * Check if the worker is idle.
+     *
+     * For synchronous execution, the worker is always idle when not executing.
+     */
+    public function isIdle(): bool
+    {
+        return $this->isRunning;
+    }
+
+    /**
+     * Check if the worker is running.
+     */
+    public function isRunning(): bool
+    {
+        return $this->isRunning;
+    }
+
+    /**
+     * Kill the worker immediately.
+     */
+    public function kill(): void
+    {
+        $this->isRunning = false;
+    }
+
+    /**
+     * Shutdown the worker gracefully.
+     */
+    public function shutdown(): void
+    {
+        $this->isRunning = false;
+    }
+
+    /**
      * Submit a task for synchronous execution.
      *
      * @template TReceive
      * @template TSend
      * @template TResult
      *
-     * @param Task<TReceive, TSend, TResult> $task
-     * @param Cancellation|null $cancellation
+     * @param  Task<TReceive, TSend, TResult>  $task
      * @return Execution<TReceive, TSend, TResult>
      */
     public function submit(Task $task, ?Cancellation $cancellation = null): Execution
     {
-        if (!$this->isRunning) {
-            throw new \Error('Cannot submit tasks to a shutdown worker');
+        if (! $this->isRunning) {
+            throw new Error('Cannot submit tasks to a shutdown worker');
         }
 
         // Create a channel for communication
@@ -49,49 +84,11 @@ final class SyncWorker implements Worker
         try {
             $result = $task->run($channel, $cancellation);
             $future = \Amp\Future::complete($result);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $future = \Amp\Future::error($e);
         }
 
         // Return an Execution instance with the completed future
         return new Execution($task, $channel, $future);
-    }
-
-    /**
-     * Check if the worker is running.
-     *
-     * @return bool
-     */
-    public function isRunning(): bool
-    {
-        return $this->isRunning;
-    }
-
-    /**
-     * Check if the worker is idle.
-     *
-     * For synchronous execution, the worker is always idle when not executing.
-     *
-     * @return bool
-     */
-    public function isIdle(): bool
-    {
-        return $this->isRunning;
-    }
-
-    /**
-     * Shutdown the worker gracefully.
-     */
-    public function shutdown(): void
-    {
-        $this->isRunning = false;
-    }
-
-    /**
-     * Kill the worker immediately.
-     */
-    public function kill(): void
-    {
-        $this->isRunning = false;
     }
 }

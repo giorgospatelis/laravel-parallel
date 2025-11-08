@@ -14,7 +14,7 @@ use LaravelParallel\Tests\Mocks\SyncWorkerPool;
  * synchronously, avoiding the need to spawn real worker processes during testing.
  * This is essential for compatibility with code coverage tools like PCOV.
  */
-class WorkerPoolHelper
+final class WorkerPoolHelper
 {
     /**
      * Create a synchronous mock worker pool for testing.
@@ -22,12 +22,34 @@ class WorkerPoolHelper
      * This pool executes tasks synchronously in the main process rather than
      * spawning worker processes, making it safe to use with code coverage tools.
      *
-     * @param int $workerCount The number of workers to simulate
+     * @param  int  $workerCount  The number of workers to simulate
      * @return WorkerPool A WorkerPool that executes tasks synchronously
      */
     public static function createMockWorkerPool(int $workerCount = 4): WorkerPool
     {
         return new SyncWorkerPool($workerCount);
+    }
+
+    /**
+     * Create a worker pool, using mocks if coverage is enabled.
+     *
+     * This function automatically decides whether to create a real pool or a mock
+     * based on the current environment. This is useful for tests that need to
+     * verify factory behavior while still being coverage-safe.
+     *
+     * @param  int  $workerCount  The number of workers
+     */
+    public static function createWorkerPool(int $workerCount = 4): WorkerPool
+    {
+        if (self::shouldUseMockPools()) {
+            return self::createMockWorkerPool($workerCount);
+        }
+
+        // If not using mocks, create a real pool (not recommended during coverage)
+        return new \Amp\Parallel\Worker\ContextWorkerPool(
+            $workerCount,
+            new \Amp\Parallel\Worker\ContextWorkerFactory()
+        );
     }
 
     /**
@@ -60,28 +82,5 @@ class WorkerPoolHelper
 
         // Default to using mocks in test environment for safety and speed
         return true;
-    }
-
-    /**
-     * Create a worker pool, using mocks if coverage is enabled.
-     *
-     * This function automatically decides whether to create a real pool or a mock
-     * based on the current environment. This is useful for tests that need to
-     * verify factory behavior while still being coverage-safe.
-     *
-     * @param int $workerCount The number of workers
-     * @return WorkerPool
-     */
-    public static function createWorkerPool(int $workerCount = 4): WorkerPool
-    {
-        if (self::shouldUseMockPools()) {
-            return self::createMockWorkerPool($workerCount);
-        }
-
-        // If not using mocks, create a real pool (not recommended during coverage)
-        return new \Amp\Parallel\Worker\ContextWorkerPool(
-            $workerCount,
-            new \Amp\Parallel\Worker\ContextWorkerFactory()
-        );
     }
 }

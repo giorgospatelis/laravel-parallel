@@ -47,7 +47,7 @@ final class ClosureTask extends AbstractTask
     /**
      * Custom unserialization to restore both parent ID and SerializableClosure.
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function __unserialize(array $data): void
     {

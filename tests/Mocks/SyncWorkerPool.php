@@ -8,6 +8,7 @@ use Amp\Cancellation;
 use Amp\Parallel\Worker\Execution;
 use Amp\Parallel\Worker\Task;
 use Amp\Parallel\Worker\WorkerPool;
+use Error;
 
 /**
  * Synchronous mock implementation of WorkerPool for testing.
@@ -29,22 +30,10 @@ final class SyncWorkerPool implements WorkerPool
     ) {}
 
     /**
-     * Get the worker limit (simulated worker count).
-     *
-     * @return int
-     */
-    public function getLimit(): int
-    {
-        return $this->workerLimit;
-    }
-
-    /**
      * Get the number of idle workers.
      *
      * For synchronous execution, we always return the full limit
      * since no workers are actually busy.
-     *
-     * @return int
      */
     public function getIdleWorkerCount(): int
     {
@@ -52,9 +41,30 @@ final class SyncWorkerPool implements WorkerPool
     }
 
     /**
-     * Get the number of workers in the pool.
+     * Get the worker limit (simulated worker count).
+     */
+    public function getLimit(): int
+    {
+        return $this->workerLimit;
+    }
+
+    /**
+     * Get a worker from the pool.
      *
-     * @return int
+     * For synchronous execution, we don't actually have workers,
+     * so this returns a mock worker.
+     */
+    public function getWorker(): \Amp\Parallel\Worker\Worker
+    {
+        if ($this->isShutdown) {
+            throw new Error('Cannot get worker from a shutdown pool');
+        }
+
+        return new SyncWorker();
+    }
+
+    /**
+     * Get the number of workers in the pool.
      */
     public function getWorkerCount(): int
     {
@@ -62,51 +72,29 @@ final class SyncWorkerPool implements WorkerPool
     }
 
     /**
-     * Check if the pool is running.
-     *
-     * @return bool
-     */
-    public function isRunning(): bool
-    {
-        return !$this->isShutdown;
-    }
-
-    /**
      * Check if the pool is idle (all workers available).
-     *
-     * @return bool
      */
     public function isIdle(): bool
     {
-        return !$this->isShutdown;
+        return ! $this->isShutdown;
     }
 
     /**
-     * Submit a task for synchronous execution.
-     *
-     * Instead of submitting to a worker process, this executes the task
-     * immediately in the current process and returns an Execution.
-     *
-     * @template TReceive
-     * @template TSend
-     * @template TResult
-     *
-     * @param Task<TReceive, TSend, TResult> $task
-     * @param Cancellation|null $cancellation
-     * @return Execution<TReceive, TSend, TResult>
-     *
-     * @throws \Error if the pool has been shutdown
+     * Check if the pool is running.
      */
-    public function submit(Task $task, ?Cancellation $cancellation = null): Execution
+    public function isRunning(): bool
     {
-        if ($this->isShutdown) {
-            throw new \Error('Cannot submit tasks to a shutdown worker pool');
-        }
+        return ! $this->isShutdown;
+    }
 
-        // Get a worker and submit the task to it
-        $worker = $this->getWorker();
-
-        return $worker->submit($task, $cancellation);
+    /**
+     * Kill the pool immediately.
+     *
+     * For synchronous execution, this is the same as shutdown.
+     */
+    public function kill(): void
+    {
+        $this->isShutdown = true;
     }
 
     /**
@@ -121,29 +109,29 @@ final class SyncWorkerPool implements WorkerPool
     }
 
     /**
-     * Get a worker from the pool.
+     * Submit a task for synchronous execution.
      *
-     * For synchronous execution, we don't actually have workers,
-     * so this returns a mock worker.
+     * Instead of submitting to a worker process, this executes the task
+     * immediately in the current process and returns an Execution.
      *
-     * @return \Amp\Parallel\Worker\Worker
+     * @template TReceive
+     * @template TSend
+     * @template TResult
+     *
+     * @param  Task<TReceive, TSend, TResult>  $task
+     * @return Execution<TReceive, TSend, TResult>
+     *
+     * @throws Error if the pool has been shutdown
      */
-    public function getWorker(): \Amp\Parallel\Worker\Worker
+    public function submit(Task $task, ?Cancellation $cancellation = null): Execution
     {
         if ($this->isShutdown) {
-            throw new \Error('Cannot get worker from a shutdown pool');
+            throw new Error('Cannot submit tasks to a shutdown worker pool');
         }
 
-        return new SyncWorker();
-    }
+        // Get a worker and submit the task to it
+        $worker = $this->getWorker();
 
-    /**
-     * Kill the pool immediately.
-     *
-     * For synchronous execution, this is the same as shutdown.
-     */
-    public function kill(): void
-    {
-        $this->isShutdown = true;
+        return $worker->submit($task, $cancellation);
     }
 }

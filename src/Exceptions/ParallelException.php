@@ -14,7 +14,7 @@ use Throwable;
  * related errors, including validation failures, worker pool errors,
  * and task execution failures.
  */
-class ParallelException extends RuntimeException
+final class ParallelException extends RuntimeException
 {
     /**
      * Create a new ParallelException instance.

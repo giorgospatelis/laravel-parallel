@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace LaravelParallel\Tests\Mocks;
 
 use Amp\Sync\Channel;
+use Closure;
 
 /**
  * Synchronous mock implementation of Channel for testing.
@@ -15,31 +16,6 @@ use Amp\Sync\Channel;
  */
 final class SyncChannel implements Channel
 {
-    /**
-     * Receive a value from the channel.
-     *
-     * In synchronous execution, there's no actual IPC, so this returns null.
-     *
-     * @param \Amp\Cancellation|null $cancellation
-     * @return mixed
-     */
-    public function receive(?\Amp\Cancellation $cancellation = null): mixed
-    {
-        return null;
-    }
-
-    /**
-     * Send a value through the channel.
-     *
-     * In synchronous execution, this is a no-op.
-     *
-     * @param mixed $data
-     */
-    public function send(mixed $data): void
-    {
-        // No-op for synchronous execution
-    }
-
     /**
      * Close the channel.
      *
@@ -52,8 +28,6 @@ final class SyncChannel implements Channel
 
     /**
      * Check if the channel is closed.
-     *
-     * @return bool
      */
     public function isClosed(): bool
     {
@@ -63,9 +37,29 @@ final class SyncChannel implements Channel
     /**
      * Called when the channel is closed by the other party.
      *
-     * @param \Closure(): void $onClose
+     * @param  Closure(): void  $onClose
      */
-    public function onClose(\Closure $onClose): void
+    public function onClose(Closure $onClose): void
+    {
+        // No-op for synchronous execution
+    }
+
+    /**
+     * Receive a value from the channel.
+     *
+     * In synchronous execution, there's no actual IPC, so this returns null.
+     */
+    public function receive(?\Amp\Cancellation $cancellation = null): mixed
+    {
+        return null;
+    }
+
+    /**
+     * Send a value through the channel.
+     *
+     * In synchronous execution, this is a no-op.
+     */
+    public function send(mixed $data): void
     {
         // No-op for synchronous execution
     }
