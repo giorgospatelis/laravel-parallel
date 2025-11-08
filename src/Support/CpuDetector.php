@@ -173,7 +173,7 @@ final class CpuDetector
      * This method uses proc_open() with an array of arguments, which prevents
      * shell interpretation and command injection vulnerabilities.
      *
-     * @param  array<string>  $command  Command and arguments as an array
+     * @param  list<string>  $command  Command and arguments as an array
      * @return int|null The number of CPU cores, or null if detection failed
      */
     private function execCommandSafely(array $command): ?int
@@ -185,6 +185,7 @@ final class CpuDetector
         ];
 
         // proc_open with array prevents shell interpretation (secure)
+        /** @var list<string> $command */
         $process = @proc_open($command, $descriptorspec, $pipes);
 
         if (! is_resource($process)) {

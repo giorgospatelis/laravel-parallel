@@ -43,6 +43,8 @@ abstract class AbstractTask implements TaskContract
 
     /**
      * Restore ID after unserialization.
+     *
+     * @param array<string, mixed> $data
      */
     public function __unserialize(array $data): void
     {

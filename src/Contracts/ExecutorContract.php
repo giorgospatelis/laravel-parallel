@@ -33,4 +33,11 @@ interface ExecutorContract
      * @param  float  $seconds  Timeout in seconds (must be > 0)
      */
     public function setTimeout(float $seconds): self;
+
+    /**
+     * Set the number of worker processes.
+     *
+     * @param  int  $count  The number of workers
+     */
+    public function setWorkerCount(int $count): self;
 }

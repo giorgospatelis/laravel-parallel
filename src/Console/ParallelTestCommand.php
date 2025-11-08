@@ -52,6 +52,9 @@ final class ParallelTestCommand extends Command
         return self::SUCCESS;
     }
 
+    /**
+     * @param array<int|string, \LaravelParallel\Contracts\ResultContract> $results
+     */
     private function displayResults(array $results, float $totalTime): void
     {
         $collection = new ResultCollection($results);
@@ -77,7 +80,9 @@ final class ParallelTestCommand extends Command
             $this->newLine();
             $this->error('Failed tasks:');
             foreach ($collection->failed() as $key => $result) {
-                $this->line("  - {$key}: {$result->getException()->getMessage()}");
+                $exception = $result->getException();
+                $message = $exception !== null ? $exception->getMessage() : 'Unknown error';
+                $this->line("  - {$key}: {$message}");
             }
         }
     }

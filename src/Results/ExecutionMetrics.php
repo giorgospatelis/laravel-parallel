@@ -38,7 +38,19 @@ final readonly class ExecutionMetrics
      */
     public static function fromResults(ResultCollection $results): self
     {
+        /** @var array<float> $executionTimes */
         $executionTimes = $results->map(fn ($r) => $r->getExecutionTime())->all();
+
+        $minTime = 0.0;
+        $maxTime = 0.0;
+        if (! empty($executionTimes)) {
+            /** @var float $minValue */
+            $minValue = min($executionTimes);
+            /** @var float $maxValue */
+            $maxValue = max($executionTimes);
+            $minTime = $minValue;
+            $maxTime = $maxValue;
+        }
 
         return new self(
             totalTasks: $results->count(),
@@ -46,8 +58,8 @@ final readonly class ExecutionMetrics
             failedTasks: $results->failed()->count(),
             totalExecutionTime: $results->totalExecutionTime(),
             averageExecutionTime: $results->averageExecutionTime(),
-            minExecutionTime: empty($executionTimes) ? 0.0 : min($executionTimes),
-            maxExecutionTime: empty($executionTimes) ? 0.0 : max($executionTimes),
+            minExecutionTime: $minTime,
+            maxExecutionTime: $maxTime,
         );
     }
 

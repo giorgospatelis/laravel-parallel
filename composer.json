@@ -38,7 +38,7 @@
         "test": "vendor/bin/pest",
         "test:coverage": "vendor/bin/pest --coverage --min=80",
         "test:coverage-html": "vendor/bin/pest --coverage-html coverage-html",
-        "test:coverage-clover": "vendor/bin/pest --coverage-clover clover.xml",
+        "test:coverage-clover": "vendor/bin/pest --coverage-clover=clover.xml",
         "phpstan": "vendor/bin/phpstan analyse",
         "format": "vendor/bin/pint",
         "format:test": "vendor/bin/pint --test"

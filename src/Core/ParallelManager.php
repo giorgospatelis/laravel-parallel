@@ -68,7 +68,7 @@ final class ParallelManager
      *
      * @param  iterable<mixed>  $items  Items to process
      * @param  callable  $callback  Function to apply to each item
-     * @return array<int|string, ParallelResult> Array of results
+     * @return array<int|string, \LaravelParallel\Contracts\ResultContract> Array of results
      *
      * @throws \LaravelParallel\Exceptions\ParallelException If execution fails
      */
@@ -92,7 +92,7 @@ final class ParallelManager
      * with exceptions rather than being thrown immediately.
      *
      * @param  array<string|int, callable>  $closures  Associative array of closures to execute
-     * @return array<string|int, ParallelResult> Results indexed by original keys
+     * @return array<string|int, \LaravelParallel\Contracts\ResultContract> Results indexed by original keys
      *
      * @throws \LaravelParallel\Exceptions\ParallelException If validation fails or pool creation fails
      */

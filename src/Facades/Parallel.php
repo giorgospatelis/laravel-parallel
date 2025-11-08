@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\Facade;
  *
  * @method static \LaravelParallel\Core\ParallelManager workers(int $count)
  * @method static \LaravelParallel\Core\ParallelManager timeout(float $seconds)
- * @method static array<int|string, \LaravelParallel\Results\ParallelResult> run(array $closures)
- * @method static array<int|string, \LaravelParallel\Results\ParallelResult> map(iterable $items, callable $callback)
+ * @method static array<int|string, \LaravelParallel\Contracts\ResultContract> run(array<int|string, callable> $closures)
+ * @method static array<int|string, \LaravelParallel\Contracts\ResultContract> map(iterable<int|string, mixed> $items, callable $callback)
  *
  * @see \LaravelParallel\Core\ParallelManager
  */
