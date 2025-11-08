@@ -19,7 +19,7 @@ use Throwable;
  *
  * Note: This class is not final to allow test mocking via inheritance.
  */
-final class WorkerPoolFactory
+class WorkerPoolFactory
 {
     public function __construct(
         private readonly CpuDetector $cpuDetector,
@@ -55,7 +55,7 @@ final class WorkerPoolFactory
      *
      * @throws ParallelException If CPU detection fails when needed
      */
-    private function resolveWorkerCount(WorkerConfiguration $config): int
+    protected function resolveWorkerCount(WorkerConfiguration $config): int
     {
         if ($config->workerCount > 0) {
             return $config->workerCount;
