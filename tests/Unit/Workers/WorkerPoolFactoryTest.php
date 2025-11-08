@@ -7,7 +7,7 @@ use LaravelParallel\Tests\Mocks\MockWorkerPoolFactory;
 use LaravelParallel\Workers\WorkerConfiguration;
 
 beforeEach(function () {
-    $this->cpuDetector = new CpuDetector();
+    $this->cpuDetector = new CpuDetector;
     // Use mock factory to avoid spawning real processes in CI environments
     $this->factory = new MockWorkerPoolFactory($this->cpuDetector);
 });
@@ -65,7 +65,7 @@ it('uses auto-detected CPU cores when worker count is 0', function () {
     $config = new WorkerConfiguration(workerCount: 0);
     $pool = $this->factory->create($config);
 
-    $cpuCount = (new CpuDetector())->detect();
+    $cpuCount = (new CpuDetector)->detect();
 
     // Should use CPU count
     expect($pool->getLimit())->toBe($cpuCount);

@@ -23,8 +23,7 @@ class WorkerPoolFactory
 {
     public function __construct(
         private readonly CpuDetector $cpuDetector,
-    ) {
-    }
+    ) {}
 
     /**
      * Create a worker pool from configuration.
@@ -40,7 +39,7 @@ class WorkerPoolFactory
             // This ensures the configured parallelism level is actually used
             return new ContextWorkerPool(
                 $workerCount,
-                new ContextWorkerFactory()
+                new ContextWorkerFactory
             );
         } catch (ParallelException $e) {
             throw $e;

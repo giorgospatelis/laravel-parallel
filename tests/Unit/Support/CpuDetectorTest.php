@@ -10,7 +10,7 @@ beforeEach(function () {
 });
 
 it('detects CPU cores successfully', function () {
-    $detector = new CpuDetector();
+    $detector = new CpuDetector;
     $cores = $detector->detect();
 
     expect($cores)->toBeInt()
@@ -18,7 +18,7 @@ it('detects CPU cores successfully', function () {
 });
 
 it('caches CPU core count after first detection', function () {
-    $detector = new CpuDetector();
+    $detector = new CpuDetector;
 
     $firstCall = $detector->detect();
     $secondCall = $detector->detect();
@@ -27,7 +27,7 @@ it('caches CPU core count after first detection', function () {
 });
 
 it('can clear the cache', function () {
-    $detector = new CpuDetector();
+    $detector = new CpuDetector;
 
     $detector->detect();
     CpuDetector::clearCache();
@@ -38,8 +38,8 @@ it('can clear the cache', function () {
 });
 
 it('returns consistent results across multiple instances', function () {
-    $detector1 = new CpuDetector();
-    $detector2 = new CpuDetector();
+    $detector1 = new CpuDetector;
+    $detector2 = new CpuDetector;
 
     $cores1 = $detector1->detect();
     $cores2 = $detector2->detect();
@@ -53,7 +53,7 @@ it('logs debug message when CPU cores are detected with logging enabled', functi
 
     CpuDetector::clearCache();
 
-    $detector = new CpuDetector();
+    $detector = new CpuDetector;
     $cores = $detector->detect();
 
     expect($cores)->toBeInt()->toBeGreaterThan(0);
@@ -64,7 +64,7 @@ it('does not log when logging is disabled', function () {
 
     CpuDetector::clearCache();
 
-    $detector = new CpuDetector();
+    $detector = new CpuDetector;
     $cores = $detector->detect();
 
     expect($cores)->toBeInt()->toBeGreaterThan(0);
@@ -73,7 +73,7 @@ it('does not log when logging is disabled', function () {
 it('detects cores on current platform successfully', function () {
     CpuDetector::clearCache();
 
-    $detector = new CpuDetector();
+    $detector = new CpuDetector;
     $cores = $detector->detect();
 
     // Verify detection works on current OS
@@ -83,11 +83,11 @@ it('detects cores on current platform successfully', function () {
 });
 
 it('handles detection when result is cached from previous call', function () {
-    $detector1 = new CpuDetector();
+    $detector1 = new CpuDetector;
     $firstResult = $detector1->detect();
 
     // Second detector should use cached value
-    $detector2 = new CpuDetector();
+    $detector2 = new CpuDetector;
     $secondResult = $detector2->detect();
 
     expect($firstResult)->toBe($secondResult);
@@ -96,14 +96,14 @@ it('handles detection when result is cached from previous call', function () {
 it('properly validates detected core count is positive', function () {
     CpuDetector::clearCache();
 
-    $detector = new CpuDetector();
+    $detector = new CpuDetector;
     $cores = $detector->detect();
 
     expect($cores)->toBeGreaterThan(0);
 });
 
 it('caches null check returns early when cache is set', function () {
-    $detector = new CpuDetector();
+    $detector = new CpuDetector;
 
     // First call populates cache
     $first = $detector->detect();

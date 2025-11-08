@@ -6,7 +6,7 @@ use LaravelParallel\Exceptions\ParallelException;
 use LaravelParallel\Support\TaskValidator;
 
 beforeEach(function () {
-    $this->validator = new TaskValidator();
+    $this->validator = new TaskValidator;
 });
 
 describe('validateCallables', function () {

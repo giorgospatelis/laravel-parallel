@@ -6,7 +6,7 @@ use LaravelParallel\Config\ParallelConfig;
 
 describe('ParallelConfig', function () {
     it('can be instantiated with default values', function () {
-        $config = new ParallelConfig();
+        $config = new ParallelConfig;
 
         expect($config->defaultWorkers)->toBeNull()
             ->and($config->defaultTimeout)->toBe(30.0)
@@ -26,7 +26,7 @@ describe('ParallelConfig', function () {
     });
 
     it('is readonly', function () {
-        $config = new ParallelConfig();
+        $config = new ParallelConfig;
 
         $config->defaultWorkers = 10;
     })->throws(Error::class);
@@ -175,7 +175,7 @@ describe('ParallelConfig::fromConfig()', function () {
     it('accepts object for max_workers', function () {
         config(['parallel.default_workers' => 4]);
         config(['parallel.default_timeout' => 30]);
-        config(['parallel.max_workers' => new stdClass()]);
+        config(['parallel.max_workers' => new stdClass]);
 
         expect(fn () => ParallelConfig::fromConfig())
             ->toThrow(InvalidArgumentException::class);

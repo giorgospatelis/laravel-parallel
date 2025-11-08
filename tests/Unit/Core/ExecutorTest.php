@@ -9,14 +9,14 @@ use LaravelParallel\Support\TaskValidator;
 use LaravelParallel\Tests\Mocks\MockWorkerPoolFactory;
 
 beforeEach(function () {
-    $this->cpuDetector = new CpuDetector();
+    $this->cpuDetector = new CpuDetector;
 
     // Use mock factory to avoid spawning real processes during tests
     // This makes tests compatible with code coverage tools like PCOV
     $this->poolFactory = new MockWorkerPoolFactory($this->cpuDetector);
 
-    $this->resultCollector = new ResultCollector();
-    $this->validator = new TaskValidator();
+    $this->resultCollector = new ResultCollector;
+    $this->validator = new TaskValidator;
 
     $this->executor = new Executor(
         $this->poolFactory,

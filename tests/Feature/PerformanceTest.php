@@ -12,10 +12,10 @@ use LaravelParallel\Support\TaskValidator;
 use LaravelParallel\Tests\Mocks\MockWorkerPoolFactory;
 
 it('executes tasks with different worker counts', function () {
-    $cpuDetector = new CpuDetector();
+    $cpuDetector = new CpuDetector;
     $poolFactory = new MockWorkerPoolFactory($cpuDetector);
-    $resultCollector = new ResultCollector();
-    $validator = new TaskValidator();
+    $resultCollector = new ResultCollector;
+    $validator = new TaskValidator;
 
     $executor = new Executor($poolFactory, $resultCollector, $validator);
 
@@ -31,10 +31,10 @@ it('executes tasks with different worker counts', function () {
 });
 
 it('executes tasks with different timeouts', function () {
-    $cpuDetector = new CpuDetector();
+    $cpuDetector = new CpuDetector;
     $poolFactory = new MockWorkerPoolFactory($cpuDetector);
-    $resultCollector = new ResultCollector();
-    $validator = new TaskValidator();
+    $resultCollector = new ResultCollector;
+    $validator = new TaskValidator;
 
     $executor = new Executor($poolFactory, $resultCollector, $validator);
 
@@ -51,10 +51,10 @@ it('executes tasks with different timeouts', function () {
 });
 
 it('collects metrics from execution results', function () {
-    $cpuDetector = new CpuDetector();
+    $cpuDetector = new CpuDetector;
     $poolFactory = new MockWorkerPoolFactory($cpuDetector);
-    $resultCollector = new ResultCollector();
-    $validator = new TaskValidator();
+    $resultCollector = new ResultCollector;
+    $validator = new TaskValidator;
 
     $executor = new Executor($poolFactory, $resultCollector, $validator);
 
@@ -76,10 +76,10 @@ it('collects metrics from execution results', function () {
 });
 
 it('handles varying task complexities', function () {
-    $cpuDetector = new CpuDetector();
+    $cpuDetector = new CpuDetector;
     $poolFactory = new MockWorkerPoolFactory($cpuDetector);
-    $resultCollector = new ResultCollector();
-    $validator = new TaskValidator();
+    $resultCollector = new ResultCollector;
+    $validator = new TaskValidator;
 
     $executor = new Executor($poolFactory, $resultCollector, $validator);
 
@@ -102,10 +102,10 @@ it('handles varying task complexities', function () {
 });
 
 it('supports fluent reconfiguration between executions', function () {
-    $cpuDetector = new CpuDetector();
+    $cpuDetector = new CpuDetector;
     $poolFactory = new MockWorkerPoolFactory($cpuDetector);
-    $resultCollector = new ResultCollector();
-    $validator = new TaskValidator();
+    $resultCollector = new ResultCollector;
+    $validator = new TaskValidator;
     $executor = new Executor($poolFactory, $resultCollector, $validator);
 
     $manager = new ParallelManager($executor, $validator);
@@ -124,10 +124,10 @@ it('supports fluent reconfiguration between executions', function () {
 });
 
 it('handles task keys with special characters', function () {
-    $cpuDetector = new CpuDetector();
+    $cpuDetector = new CpuDetector;
     $poolFactory = new MockWorkerPoolFactory($cpuDetector);
-    $resultCollector = new ResultCollector();
-    $validator = new TaskValidator();
+    $resultCollector = new ResultCollector;
+    $validator = new TaskValidator;
 
     $executor = new Executor($poolFactory, $resultCollector, $validator);
 
@@ -148,10 +148,10 @@ it('handles task keys with special characters', function () {
 });
 
 it('processes results with ResultCollection utility methods', function () {
-    $cpuDetector = new CpuDetector();
+    $cpuDetector = new CpuDetector;
     $poolFactory = new MockWorkerPoolFactory($cpuDetector);
-    $resultCollector = new ResultCollector();
-    $validator = new TaskValidator();
+    $resultCollector = new ResultCollector;
+    $validator = new TaskValidator;
 
     $executor = new Executor($poolFactory, $resultCollector, $validator);
 

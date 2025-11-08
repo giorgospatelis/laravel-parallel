@@ -27,8 +27,7 @@ final class SyncWorkerPool implements WorkerPool
 
     public function __construct(
         private readonly int $workerLimit,
-    ) {
-    }
+    ) {}
 
     /**
      * Get the number of idle workers.
@@ -61,7 +60,7 @@ final class SyncWorkerPool implements WorkerPool
             throw new Error('Cannot get worker from a shutdown pool');
         }
 
-        return new SyncWorker();
+        return new SyncWorker;
     }
 
     /**

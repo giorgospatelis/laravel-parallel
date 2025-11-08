@@ -10,14 +10,14 @@ use LaravelParallel\Support\TaskValidator;
 use LaravelParallel\Tests\Mocks\MockWorkerPoolFactory;
 
 beforeEach(function () {
-    $cpuDetector = new CpuDetector();
+    $cpuDetector = new CpuDetector;
 
     // Use mock factory to avoid spawning real processes during tests
     // This makes tests compatible with code coverage tools like PCOV
     $poolFactory = new MockWorkerPoolFactory($cpuDetector);
 
-    $resultCollector = new ResultCollector();
-    $validator = new TaskValidator();
+    $resultCollector = new ResultCollector;
+    $validator = new TaskValidator;
 
     $executor = new Executor($poolFactory, $resultCollector, $validator);
 
@@ -134,10 +134,10 @@ it('can chain workers and timeout before map', function () {
 });
 
 it('creates new instance via make factory method', function () {
-    $cpuDetector = new CpuDetector();
+    $cpuDetector = new CpuDetector;
     $poolFactory = new MockWorkerPoolFactory($cpuDetector);
-    $resultCollector = new ResultCollector();
-    $validator = new TaskValidator();
+    $resultCollector = new ResultCollector;
+    $validator = new TaskValidator;
     $executor = new Executor($poolFactory, $resultCollector, $validator);
 
     $manager = ParallelManager::make($executor, $validator);

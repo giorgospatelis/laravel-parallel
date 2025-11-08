@@ -74,7 +74,7 @@ describe('TaskCompleted', function () {
             'integer' => 123,
             'float' => 45.6,
             'array' => [1, 2, 3],
-            'object' => new stdClass(),
+            'object' => new stdClass,
             'null' => null,
             'boolean' => true,
         ];

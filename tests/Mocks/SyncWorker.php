@@ -72,11 +72,11 @@ final class SyncWorker implements Worker
         }
 
         // Create a channel for communication
-        $channel = new SyncChannel();
+        $channel = new SyncChannel;
 
         // Create a cancellation token if provided, or use a no-op one
         if ($cancellation === null) {
-            $cancellation = new \Amp\DeferredCancellation();
+            $cancellation = new \Amp\DeferredCancellation;
             $cancellation = $cancellation->getCancellation();
         }
 

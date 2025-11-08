@@ -18,8 +18,7 @@ final readonly class ParallelConfig
         public ?int $defaultWorkers = null,
         public ?float $defaultTimeout = 30.0,
         public int $maxWorkers = 128,
-    ) {
-    }
+    ) {}
 
     /**
      * Create configuration from Laravel config array.

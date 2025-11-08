@@ -9,10 +9,10 @@ use LaravelParallel\Support\TaskValidator;
 use LaravelParallel\Tests\Mocks\MockWorkerPoolFactory;
 
 it('executes complete workflow from executor to result collection', function () {
-    $cpuDetector = new CpuDetector();
+    $cpuDetector = new CpuDetector;
     $poolFactory = new MockWorkerPoolFactory($cpuDetector);
-    $resultCollector = new ResultCollector();
-    $validator = new TaskValidator();
+    $resultCollector = new ResultCollector;
+    $validator = new TaskValidator;
 
     $executor = new Executor($poolFactory, $resultCollector, $validator);
 
@@ -31,10 +31,10 @@ it('executes complete workflow from executor to result collection', function () 
 });
 
 it('handles mixed success and failure results', function () {
-    $cpuDetector = new CpuDetector();
+    $cpuDetector = new CpuDetector;
     $poolFactory = new MockWorkerPoolFactory($cpuDetector);
-    $resultCollector = new ResultCollector();
-    $validator = new TaskValidator();
+    $resultCollector = new ResultCollector;
+    $validator = new TaskValidator;
 
     $executor = new Executor($poolFactory, $resultCollector, $validator);
 
@@ -55,10 +55,10 @@ it('handles mixed success and failure results', function () {
 });
 
 it('executes tasks with various data types', function () {
-    $cpuDetector = new CpuDetector();
+    $cpuDetector = new CpuDetector;
     $poolFactory = new MockWorkerPoolFactory($cpuDetector);
-    $resultCollector = new ResultCollector();
-    $validator = new TaskValidator();
+    $resultCollector = new ResultCollector;
+    $validator = new TaskValidator;
 
     $executor = new Executor($poolFactory, $resultCollector, $validator);
 
@@ -85,10 +85,10 @@ it('executes tasks with various data types', function () {
 });
 
 it('respects worker count configuration', function () {
-    $cpuDetector = new CpuDetector();
+    $cpuDetector = new CpuDetector;
     $poolFactory = new MockWorkerPoolFactory($cpuDetector);
-    $resultCollector = new ResultCollector();
-    $validator = new TaskValidator();
+    $resultCollector = new ResultCollector;
+    $validator = new TaskValidator;
 
     $executor = new Executor($poolFactory, $resultCollector, $validator);
     $executor->setWorkerCount(8);
@@ -103,10 +103,10 @@ it('respects worker count configuration', function () {
 });
 
 it('respects timeout configuration', function () {
-    $cpuDetector = new CpuDetector();
+    $cpuDetector = new CpuDetector;
     $poolFactory = new MockWorkerPoolFactory($cpuDetector);
-    $resultCollector = new ResultCollector();
-    $validator = new TaskValidator();
+    $resultCollector = new ResultCollector;
+    $validator = new TaskValidator;
 
     $executor = new Executor($poolFactory, $resultCollector, $validator);
     $executor->setTimeout(15.0);
@@ -121,10 +121,10 @@ it('respects timeout configuration', function () {
 });
 
 it('executes large batches efficiently', function () {
-    $cpuDetector = new CpuDetector();
+    $cpuDetector = new CpuDetector;
     $poolFactory = new MockWorkerPoolFactory($cpuDetector);
-    $resultCollector = new ResultCollector();
-    $validator = new TaskValidator();
+    $resultCollector = new ResultCollector;
+    $validator = new TaskValidator;
 
     $executor = new Executor($poolFactory, $resultCollector, $validator);
     $executor->setWorkerCount(4);
@@ -146,10 +146,10 @@ it('executes large batches efficiently', function () {
 });
 
 it('preserves execution order in results', function () {
-    $cpuDetector = new CpuDetector();
+    $cpuDetector = new CpuDetector;
     $poolFactory = new MockWorkerPoolFactory($cpuDetector);
-    $resultCollector = new ResultCollector();
-    $validator = new TaskValidator();
+    $resultCollector = new ResultCollector;
+    $validator = new TaskValidator;
 
     $executor = new Executor($poolFactory, $resultCollector, $validator);
 
@@ -166,10 +166,10 @@ it('preserves execution order in results', function () {
 });
 
 it('tracks execution time for all tasks', function () {
-    $cpuDetector = new CpuDetector();
+    $cpuDetector = new CpuDetector;
     $poolFactory = new MockWorkerPoolFactory($cpuDetector);
-    $resultCollector = new ResultCollector();
-    $validator = new TaskValidator();
+    $resultCollector = new ResultCollector;
+    $validator = new TaskValidator;
 
     $executor = new Executor($poolFactory, $resultCollector, $validator);
 

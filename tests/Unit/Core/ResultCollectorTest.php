@@ -5,13 +5,13 @@ declare(strict_types=1);
 use LaravelParallel\Core\ResultCollector;
 
 it('can be instantiated', function () {
-    $collector = new ResultCollector();
+    $collector = new ResultCollector;
 
     expect($collector)->toBeInstanceOf(ResultCollector::class);
 });
 
 it('returns empty array when given empty executions', function () {
-    $collector = new ResultCollector();
+    $collector = new ResultCollector;
 
     $results = $collector->collect([]);
 
@@ -21,7 +21,7 @@ it('returns empty array when given empty executions', function () {
 it('collects results with events enabled', function () {
     config(['parallel.events.enabled' => true]);
 
-    $collector = new ResultCollector();
+    $collector = new ResultCollector;
 
     $results = $collector->collect([]);
 
@@ -31,7 +31,7 @@ it('collects results with events enabled', function () {
 it('collects results with events disabled', function () {
     config(['parallel.events.enabled' => false]);
 
-    $collector = new ResultCollector();
+    $collector = new ResultCollector;
 
     $results = $collector->collect([]);
 
@@ -39,7 +39,7 @@ it('collects results with events disabled', function () {
 });
 
 it('handles null timeout parameter', function () {
-    $collector = new ResultCollector();
+    $collector = new ResultCollector;
 
     $results = $collector->collect([], null);
 
@@ -47,7 +47,7 @@ it('handles null timeout parameter', function () {
 });
 
 it('handles positive timeout parameter', function () {
-    $collector = new ResultCollector();
+    $collector = new ResultCollector;
 
     $results = $collector->collect([], 30.0);
 
@@ -55,7 +55,7 @@ it('handles positive timeout parameter', function () {
 });
 
 it('handles zero timeout parameter', function () {
-    $collector = new ResultCollector();
+    $collector = new ResultCollector;
 
     $results = $collector->collect([], 0.0);
 

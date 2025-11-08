@@ -91,25 +91,25 @@ describe('ParallelTestCommand', function () {
     })->skip('Requires actual parallel execution');
 
     it('can be instantiated directly', function () {
-        $command = new LaravelParallel\Console\ParallelTestCommand();
+        $command = new LaravelParallel\Console\ParallelTestCommand;
 
         expect($command)->toBeInstanceOf(Illuminate\Console\Command::class);
     });
 
     it('has correct command signature property', function () {
-        $command = new LaravelParallel\Console\ParallelTestCommand();
+        $command = new LaravelParallel\Console\ParallelTestCommand;
 
         expect($command->getName())->toBe('parallel:test');
     });
 
     it('has description property set', function () {
-        $command = new LaravelParallel\Console\ParallelTestCommand();
+        $command = new LaravelParallel\Console\ParallelTestCommand;
 
         expect($command->getDescription())->toBe('Test parallel processing with configurable parameters');
     });
 
     it('defines workers option in signature', function () {
-        $command = new LaravelParallel\Console\ParallelTestCommand();
+        $command = new LaravelParallel\Console\ParallelTestCommand;
         $definition = $command->getDefinition();
 
         expect($definition->hasOption('workers'))->toBeTrue()
@@ -117,7 +117,7 @@ describe('ParallelTestCommand', function () {
     });
 
     it('defines tasks option in signature', function () {
-        $command = new LaravelParallel\Console\ParallelTestCommand();
+        $command = new LaravelParallel\Console\ParallelTestCommand;
         $definition = $command->getDefinition();
 
         expect($definition->hasOption('tasks'))->toBeTrue()
@@ -125,7 +125,7 @@ describe('ParallelTestCommand', function () {
     });
 
     it('defines delay option in signature', function () {
-        $command = new LaravelParallel\Console\ParallelTestCommand();
+        $command = new LaravelParallel\Console\ParallelTestCommand;
         $definition = $command->getDefinition();
 
         expect($definition->hasOption('delay'))->toBeTrue()

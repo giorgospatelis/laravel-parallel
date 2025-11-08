@@ -48,7 +48,7 @@ final class WorkerPoolHelper
         // If not using mocks, create a real pool (not recommended during coverage)
         return new \Amp\Parallel\Worker\ContextWorkerPool(
             $workerCount,
-            new \Amp\Parallel\Worker\ContextWorkerFactory()
+            new \Amp\Parallel\Worker\ContextWorkerFactory
         );
     }
 

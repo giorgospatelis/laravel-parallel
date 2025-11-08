@@ -22,8 +22,7 @@ final class WorkerPoolManager implements WorkerPoolContract
     public function __construct(
         private readonly WorkerPool $pool,
         private readonly int $workerCount,
-    ) {
-    }
+    ) {}
 
     /**
      * Get the number of workers in this pool.
