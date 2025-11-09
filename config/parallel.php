@@ -120,4 +120,29 @@ return [
         */
         'enabled' => env('PARALLEL_EVENTS_ENABLED', true),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Laravel Horizon Integration
+    |--------------------------------------------------------------------------
+    |
+    | Configure integration with Laravel Horizon for monitoring parallel tasks.
+    | When enabled, parallel task metrics will be recorded to Redis using
+    | Horizon's schema, allowing tasks to be monitored via Horizon dashboard.
+    |
+    */
+    'horizon' => [
+        /*
+        | Enable or disable Horizon integration.
+        | When enabled, parallel task metrics will be recorded to Redis.
+        | Requires Laravel Horizon to be installed.
+        */
+        'enabled' => env('PARALLEL_HORIZON_ENABLED', true),
+
+        /*
+        | The Redis connection to use for Horizon metrics.
+        | Should match one of your configured Redis connections.
+        */
+        'redis_connection' => env('PARALLEL_HORIZON_REDIS_CONNECTION', 'default'),
+    ],
 ];
