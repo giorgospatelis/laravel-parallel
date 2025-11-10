@@ -26,7 +26,7 @@ Laravel Parallel provides an intuitive, Laravel-style API for true parallel proc
 - **True Parallelism** - Real multi-process execution, not just async/concurrent
 - **Rich Result Handling** - Comprehensive result collection with metrics and filtering
 - **Laravel Integration** - Works seamlessly with Octane, Horizon, and other Laravel features
-- **Type-Safe** - PHPStan Level 9 compliant with full type coverage
+- **Type-Safe** - PHPStan Level 8 compliant with full type coverage
 - **Extensible Architecture** - Built on SOLID principles with clear extension points
 - **Production Ready** - Comprehensive error handling, logging, and monitoring
 - **Event-Driven** - Task lifecycle events for observability and monitoring
@@ -256,6 +256,44 @@ Event::listen(TaskFailed::class, function ($event) {
 });
 ```
 
+## Integrations
+
+Laravel Parallel integrates seamlessly with popular Laravel ecosystem tools to enhance monitoring, observability, and developer experience.
+
+### Laravel Horizon Integration
+
+Monitor your parallel tasks in real-time through Laravel Horizon's dashboard. The Horizon integration provides:
+
+- **Automatic metrics recording** for all parallel tasks
+- **Real-time statistics** via REST API endpoints
+- **Dashboard tagging** for easy filtering and monitoring
+- **Event-driven architecture** with zero configuration required
+
+The integration is included with the package and activates automatically when Laravel Horizon is detected. Simply install Horizon and start using Laravel Parallel - metrics will appear in your Horizon dashboard immediately.
+
+**Quick Start:**
+
+```php
+// Execute parallel tasks as normal
+$results = Parallel::run([
+    'task1' => fn() => processData(1),
+    'task2' => fn() => processData(2),
+]);
+
+// View metrics in Horizon dashboard at /horizon
+// Filter by tag "parallel" to see all parallel tasks
+```
+
+For detailed setup instructions, API documentation, and advanced configuration options, see the [Horizon Integration Guide](docs/horizon-integration.md).
+
+### Future Integrations
+
+Planned integrations for upcoming releases:
+
+- **Laravel Telescope** - Debug parallel execution with detailed query and event tracking
+- **Laravel Pulse** - Real-time performance monitoring and alerting
+- **Sentry** - Advanced error tracking and performance monitoring
+
 ## Extending the Package
 
 Laravel Parallel is built with extensibility in mind. You can create:
@@ -370,7 +408,7 @@ composer phpstan
 ```
 
 The package maintains:
-- PHPStan Level 9 compliance
+- PHPStan Level 8 compliance
 - 77.5% test coverage (251 tests, 672 assertions)
 - Comprehensive unit and feature tests
 
@@ -510,7 +548,7 @@ if (count($failedTasks) > 0) {
 
 Yes! Laravel Parallel v2.0+ is built with production in mind:
 
-- PHPStan Level 9 compliance (maximum type safety)
+- PHPStan Level 8 compliance (maximum type safety)
 - Comprehensive test coverage (77.5% with 251 tests and 672 assertions)
 - Battle-tested amphp/parallel foundation
 - Used in production Laravel applications
