@@ -286,11 +286,37 @@ $results = Parallel::run([
 
 For detailed setup instructions, API documentation, and advanced configuration options, see the [Horizon Integration Guide](docs/horizon-integration.md).
 
+### Laravel Telescope Integration
+
+Debug and profile your parallel tasks with Laravel Telescope's powerful inspection tools. The Telescope integration provides:
+
+- **Task lifecycle tracking** - Monitor when tasks start, complete, or fail
+- **Execution metrics** - View execution times, results, and performance data
+- **Smart filtering** - Filter tasks by status, exception type, or execution duration
+- **Exception debugging** - Detailed stack traces and error information for failed tasks
+
+The integration is included with the package and activates automatically when Laravel Telescope is detected. Task details appear in a dedicated "Parallel Task" section within your Telescope dashboard.
+
+**Quick Start:**
+
+```php
+// Execute parallel tasks as normal
+$results = Parallel::run([
+    'user_report' => fn() => generateUserReport(),
+    'sales_data' => fn() => fetchSalesData(),
+]);
+
+// View in Telescope dashboard at /telescope
+// Navigate to "Parallel Task" section
+// Filter by tags: parallel, parallel:completed, parallel:failed, task:user_report
+```
+
+For detailed setup instructions, configuration options, and debugging workflows, see the [Telescope Integration Guide](docs/telescope-integration.md).
+
 ### Future Integrations
 
 Planned integrations for upcoming releases:
 
-- **Laravel Telescope** - Debug parallel execution with detailed query and event tracking
 - **Laravel Pulse** - Real-time performance monitoring and alerting
 - **Sentry** - Advanced error tracking and performance monitoring
 

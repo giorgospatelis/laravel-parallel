@@ -54,7 +54,9 @@
     "extra": {
         "laravel": {
             "providers": [
-                "LaravelParallel\\ParallelServiceProvider"
+                "LaravelParallel\\ParallelServiceProvider",
+                "LaravelParallel\\Integrations\\Horizon\\ParallelHorizonServiceProvider",
+                "LaravelParallel\\Integrations\\Telescope\\ParallelTelescopeServiceProvider"
             ],
             "aliases": {
                 "Parallel": "LaravelParallel\\Facades\\Parallel"

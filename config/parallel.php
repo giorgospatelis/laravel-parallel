@@ -145,4 +145,58 @@ return [
         */
         'redis_connection' => env('PARALLEL_HORIZON_REDIS_CONNECTION', 'default'),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Laravel Telescope Integration
+    |--------------------------------------------------------------------------
+    |
+    | Configure integration with Laravel Telescope for debugging and profiling
+    | parallel tasks. When enabled, task execution details will be recorded
+    | in Telescope for inspection via the Telescope dashboard.
+    |
+    | STORAGE IMPLICATIONS:
+    | - Each task creates 1-3 entries in telescope_entries table (started, completed/failed)
+    | - Average storage per task: ~2-5KB depending on result size and stack traces
+    | - 1000 tasks = ~2-5MB of database storage
+    | - Use Telescope's data pruning to manage storage (telescope:prune command)
+    |
+    | PERFORMANCE IMPACT:
+    | - Minimal overhead when record_tasks is enabled (~0.5-1ms per task)
+    | - Event listener overhead even when disabled (~0.1ms per task)
+    | - Database writes are asynchronous and don't block task execution
+    | - Recommended: Disable in production for high-volume workloads (>1000 tasks/min)
+    |
+    */
+    'telescope' => [
+        /*
+        | Enable or disable Telescope integration.
+        | When enabled, parallel task execution will be recorded in Telescope.
+        | Requires Laravel Telescope to be installed.
+        |
+        | Set to false to completely disable integration (no event listeners registered).
+        */
+        'enabled' => env('PARALLEL_TELESCOPE_ENABLED', true),
+
+        /*
+        | Record individual task details.
+        | When enabled, detailed information about each task will be captured:
+        | - Task start time and key
+        | - Execution time and result (truncated if large)
+        | - Exception details with stack traces (for failures)
+        | - Tags for filtering (parallel, parallel:started/completed/failed)
+        |
+        | WHEN TO DISABLE:
+        | - Production environments with >1000 tasks/minute
+        | - When task results are very large (>10KB per task)
+        | - When you only need batch-level statistics (use logging instead)
+        |
+        | WHEN TO ENABLE:
+        | - Development and staging environments
+        | - Debugging task failures and performance issues
+        | - Profiling parallel execution patterns
+        | - Low to medium volume workloads (<1000 tasks/minute)
+        */
+        'record_tasks' => env('PARALLEL_TELESCOPE_RECORD_TASKS', true),
+    ],
 ];

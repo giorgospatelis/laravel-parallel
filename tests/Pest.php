@@ -49,6 +49,9 @@ pest()->extend(LaravelParallel\Tests\TestCase::class)
 pest()->extend(LaravelParallel\Tests\TestCase::class)
     ->in('Integration/Horizon');
 
+pest()->extend(LaravelParallel\Tests\TestCase::class)
+    ->in('Integration/Telescope');
+
 // Other Unit tests (Exceptions, Results) use default PHPUnit TestCase
 pest()->in('Unit/Exceptions');
 pest()->in('Unit/Results');

@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1] - 2025-11-11
+
+### Added
+- **Laravel Telescope Integration**: Complete integration with Laravel Telescope for debugging and profiling parallel tasks
+- Task lifecycle tracking with automatic recording in Telescope dashboard
+- Smart data truncation (1KB results, 100 array items, 10 stack trace frames) to prevent database bloat
+- Memory leak protection with TTL-based cleanup (5min TTL, 1000 max active tasks) for Octane/Swoole compatibility
+- Six automatic tag types for filtering: `parallel`, `parallel:completed`, `parallel:failed`, `task:{key}`, `exception:{class}`, `duration:{range}`
+- Configuration options for Telescope integration:
+  - `PARALLEL_TELESCOPE_ENABLED` (default: true) - Toggle Telescope recording
+  - `PARALLEL_TELESCOPE_RECORD_TASKS` (default: true) - Control task detail recording
+- `ParallelTelescopeServiceProvider` for automatic registration when Telescope is installed
+- `ParallelTaskWatcher` extending Laravel Telescope's watcher system
+- Event-driven recording listening to TaskStarted, TaskCompleted, and TaskFailed events
+- Graceful degradation when Telescope is not installed
+
+### Documentation
+- Added comprehensive Telescope integration guide at `docs/telescope-integration.md`
+- Updated "Integrations" section in main README.md with Telescope usage examples
+- Included configuration options, dashboard filtering, and debugging workflows
+- Documented minimal performance overhead (~0.5-1ms per task)
+- Added troubleshooting guide for common Telescope integration scenarios
+
 ## [1.1.0] - 2025-11-10
 
 ### Added
