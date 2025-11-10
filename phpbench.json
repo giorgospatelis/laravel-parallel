@@ -1,0 +1,35 @@
+{
+    "$schema": "./vendor/phpbench/phpbench/phpbench.schema.json",
+    "runner.bootstrap": "benchmarks/bootstrap.php",
+    "runner.path": "benchmarks",
+    "runner.iterations": 3,
+    "runner.revs": 5,
+    "runner.warmup": 1,
+    "runner.retry_threshold": 10.0,
+    "runner.php_config": {
+        "memory_limit": "2G"
+    },
+    "runner.env_enabled_providers": [
+        "uname",
+        "php",
+        "opcache"
+    ],
+    "storage.driver": "xml",
+    "storage.xml_storage_path": ".phpbench/storage",
+    "report.generators": {
+        "table": {
+            "extends": "aggregate"
+        },
+        "html": {
+            "extends": "aggregate",
+            "title": "Laravel Parallel Benchmarks",
+            "description": "Performance benchmarks for Laravel Parallel package"
+        }
+    },
+    "report.outputs": {
+        "html": {
+            "renderer": "html",
+            "path": ".phpbench/html"
+        }
+    }
+}

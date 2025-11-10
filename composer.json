@@ -22,7 +22,8 @@
         "laravel/pint": "^1.0",
         "orchestra/testbench": "^9.0|^10.0",
         "pestphp/pest": "^3.0|^4.0",
-        "pestphp/pest-plugin-laravel": "^3.0|^4.0"
+        "pestphp/pest-plugin-laravel": "^3.0|^4.0",
+        "phpbench/phpbench": "^1.3"
     },
     "autoload": {
         "psr-4": {
@@ -31,7 +32,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "LaravelParallel\\Tests\\": "tests/"
+            "LaravelParallel\\Tests\\": "tests/",
+            "LaravelParallel\\Benchmarks\\": "benchmarks/"
         }
     },
     "scripts": {
@@ -41,7 +43,17 @@
         "test:coverage-clover": "vendor/bin/pest --coverage-clover=clover.xml",
         "phpstan": "vendor/bin/phpstan analyse",
         "format": "vendor/bin/pint",
-        "format:test": "vendor/bin/pint --test"
+        "format:test": "vendor/bin/pint --test",
+        "bench": "vendor/bin/phpbench run benchmarks/CoreParallelBench.php --filter=benchSetupOverhead --iterations=3 --revs=3 --report=aggregate",
+        "bench:quick": "vendor/bin/phpbench run benchmarks/CoreParallelBench.php --filter=benchSetupOverhead --iterations=1 --revs=1 --report=default",
+        "bench:core": "vendor/bin/phpbench run benchmarks/CoreParallelBench.php --iterations=3 --revs=5 --warmup=1 --report=aggregate --progress=dots",
+        "bench:scaling": "vendor/bin/phpbench run benchmarks/ScalingBench.php --iterations=3 --revs=5 --warmup=1 --report=aggregate --progress=dots",
+        "bench:full": "vendor/bin/phpbench run --iterations=10 --revs=50 --warmup=2 --report=aggregate --progress=dots",
+        "bench:baseline": "vendor/bin/phpbench run --iterations=3 --revs=5 --tag=baseline --store",
+        "bench:compare": "vendor/bin/phpbench run --iterations=3 --revs=5 --ref=baseline --report=aggregate",
+        "bench:report": "vendor/bin/phpbench run --iterations=3 --revs=5 --report=html --output=html",
+        "bench:aggregate": "vendor/bin/phpbench run --report=aggregate",
+        "bench:env": "vendor/bin/phpbench run --report=env"
     },
     "config": {
         "sort-packages": true,

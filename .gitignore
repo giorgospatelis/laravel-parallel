@@ -45,6 +45,10 @@
 /coverage.xml
 *.coverage
 
+# PHPBench benchmark artifacts
+/.phpbench/
+.phpbench.cache
+
 # ============================================
 # Operating System Files
 # ============================================
