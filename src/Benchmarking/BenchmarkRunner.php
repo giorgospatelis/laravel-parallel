@@ -23,8 +23,8 @@ final readonly class BenchmarkRunner
      */
     public function __construct(
         private CpuDetector $cpuDetector
-    ) {
-    }
+    ) {}
+
     /**
      * Run a single benchmark scenario.
      *
