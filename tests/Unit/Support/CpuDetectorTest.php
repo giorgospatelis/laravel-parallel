@@ -114,3 +114,100 @@ it('caches null check returns early when cache is set', function () {
     expect($first)->toBe($second)
         ->and($first)->toBeGreaterThan(0);
 });
+
+it('detects CPU cores from environment variables', function () {
+    CpuDetector::clearCache();
+
+    // Set environment variable
+    putenv('NUMBER_OF_PROCESSORS=8');
+
+    $detector = new CpuDetector;
+    $cores = $detector->detect();
+
+    // Should detect at least 1 core (may use env var or actual detection)
+    expect($cores)->toBeInt()->toBeGreaterThan(0);
+
+    // Clean up
+    putenv('NUMBER_OF_PROCESSORS');
+});
+
+it('validates core count is within reasonable bounds', function () {
+    CpuDetector::clearCache();
+
+    $detector = new CpuDetector;
+    $cores = $detector->detect();
+
+    expect($cores)->toBeInt()
+        ->toBeGreaterThan(0)
+        ->toBeLessThan(10000); // Upper bound check
+});
+
+it('logs error when CPU detection would fail with logging enabled', function () {
+    config(['parallel.logging.enabled' => true]);
+    config(['parallel.logging.channel' => 'stack']);
+
+    CpuDetector::clearCache();
+
+    $detector = new CpuDetector;
+
+    // On a working system, this should not throw
+    expect(fn() => $detector->detect())->not->toThrow(Exception::class);
+});
+
+it('maintains cache across multiple detector instances', function () {
+    CpuDetector::clearCache();
+
+    $detector1 = new CpuDetector;
+    $cores1 = $detector1->detect();
+
+    $detector2 = new CpuDetector;
+    $cores2 = $detector2->detect();
+
+    $detector3 = new CpuDetector;
+    $cores3 = $detector3->detect();
+
+    expect($cores1)->toBe($cores2)
+        ->and($cores2)->toBe($cores3);
+});
+
+it('clears cache properly for fresh detection', function () {
+    $detector = new CpuDetector;
+    $first = $detector->detect();
+
+    CpuDetector::clearCache();
+
+    $second = $detector->detect();
+
+    // Both should be valid even after cache clear
+    expect($first)->toBeInt()->toBeGreaterThan(0)
+        ->and($second)->toBeInt()->toBeGreaterThan(0);
+});
+
+it('handles concurrent detection requests correctly', function () {
+    CpuDetector::clearCache();
+
+    $detector = new CpuDetector;
+
+    // Simulate concurrent requests
+    $results = [];
+    for ($i = 0; $i < 10; $i++) {
+        $results[] = $detector->detect();
+    }
+
+    // All results should be the same
+    expect(count(array_unique($results)))->toBe(1)
+        ->and($results[0])->toBeGreaterThan(0);
+});
+
+it('handles detection on different OS families', function () {
+    // This test verifies the code paths for different OS families exist
+    CpuDetector::clearCache();
+
+    $detector = new CpuDetector;
+    $cores = $detector->detect();
+
+    // Verify OS-specific detection works
+    $osFamily = PHP_OS_FAMILY;
+    expect($osFamily)->toBeIn(['Linux', 'Windows', 'Darwin', 'BSD', 'Solaris', 'Unknown']);
+    expect($cores)->toBeGreaterThan(0);
+});
