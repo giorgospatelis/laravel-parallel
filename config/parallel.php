@@ -199,4 +199,45 @@ return [
         */
         'record_tasks' => env('PARALLEL_TELESCOPE_RECORD_TASKS', true),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Performance Benchmarking
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for the performance benchmarking suite. Benchmarks help
+    | measure parallel processing performance across different workload types
+    | and identify optimal worker configurations.
+    |
+    */
+    'benchmarking' => [
+        /*
+        | Enable or disable the benchmarking suite.
+        | When disabled, the parallel:benchmark command will not be available.
+        */
+        'enabled' => env('PARALLEL_BENCHMARKING_ENABLED', true),
+
+        /*
+        | Default number of iterations per benchmark scenario.
+        | Higher values provide more accurate results but take longer.
+        */
+        'default_iterations' => env('PARALLEL_BENCHMARK_ITERATIONS', 100),
+
+        /*
+        | Default number of workers for benchmarks.
+        | null = auto-detect CPU cores
+        */
+        'default_workers' => env('PARALLEL_BENCHMARK_WORKERS', null),
+
+        /*
+        | Available benchmark scenarios.
+        | You can register custom scenarios by adding them here.
+        */
+        'scenarios' => [
+            'cpu-bound' => LaravelParallel\Benchmarking\Scenarios\CpuBoundScenario::class,
+            'io-bound' => LaravelParallel\Benchmarking\Scenarios\IoBoundScenario::class,
+            'mixed' => LaravelParallel\Benchmarking\Scenarios\MixedWorkloadScenario::class,
+            'memory' => LaravelParallel\Benchmarking\Scenarios\MemoryIntensiveScenario::class,
+        ],
+    ],
 ];

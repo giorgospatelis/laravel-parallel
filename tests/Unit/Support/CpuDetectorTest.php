@@ -151,7 +151,7 @@ it('logs error when CPU detection would fail with logging enabled', function () 
     $detector = new CpuDetector;
 
     // On a working system, this should not throw
-    expect(fn() => $detector->detect())->not->toThrow(Exception::class);
+    expect(fn () => $detector->detect())->not->toThrow(Exception::class);
 });
 
 it('maintains cache across multiple detector instances', function () {

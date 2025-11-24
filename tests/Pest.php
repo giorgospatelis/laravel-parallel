@@ -45,6 +45,10 @@ pest()->extend(LaravelParallel\Tests\TestCase::class)
 pest()->extend(LaravelParallel\Tests\TestCase::class)
     ->in('Unit/Console');
 
+// Benchmarking tests need Laravel's test case for config and Parallel facade
+pest()->extend(LaravelParallel\Tests\TestCase::class)
+    ->in('Unit/Benchmarking');
+
 // Integration tests need Laravel's test case for full stack testing
 pest()->extend(LaravelParallel\Tests\TestCase::class)
     ->in('Integration/Horizon');

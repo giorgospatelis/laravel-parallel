@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace LaravelParallel;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use LaravelParallel\Benchmarking\BenchmarkRunner;
 use LaravelParallel\Contracts\ExecutorContract;
 use LaravelParallel\Core\Executor;
 use LaravelParallel\Core\ParallelManager;
@@ -27,6 +28,7 @@ final class ParallelServiceProvider extends BaseServiceProvider
 
             $this->commands([
                 Console\ParallelTestCommand::class,
+                Console\ParallelBenchmarkCommand::class,
             ]);
         }
     }
@@ -42,6 +44,7 @@ final class ParallelServiceProvider extends BaseServiceProvider
         $this->app->singleton(CpuDetector::class);
         $this->app->singleton(TaskValidator::class);
         $this->app->singleton(ResultCollector::class);
+        $this->app->singleton(BenchmarkRunner::class);
 
         // Register worker pool factory
         $this->app->singleton(WorkerPoolFactory::class, function ($app) {

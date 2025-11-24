@@ -210,7 +210,7 @@ final class CpuDetector
         }
 
         // Parse output
-        $lines = array_filter(array_map('trim', explode("\n", trim($output))));
+        $lines = array_filter(array_map('trim', explode("\n", mb_trim($output))));
 
         if (empty($lines)) {
             return null;
