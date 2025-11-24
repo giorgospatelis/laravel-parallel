@@ -7,6 +7,75 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2025-01-24
+
+### Added
+- **Performance Benchmarking Suite**: Comprehensive benchmarking system for measuring parallel processing performance
+  - Four built-in benchmark scenarios:
+    - `cpu-bound` - CPU-intensive tasks (prime numbers, Fibonacci, hashing)
+    - `io-bound` - I/O-intensive tasks (file operations, network simulation)
+    - `mixed` - Mixed workload combining CPU and I/O operations
+    - `memory` - Memory-intensive tasks (large array/string operations)
+  - `BenchmarkRunner` orchestrator for executing benchmark scenarios
+  - `BenchmarkResult` immutable value object with formatted metrics
+  - `BenchmarkScenario` contract for creating custom benchmarks
+  - `php artisan parallel:benchmark` command with options:
+    - `--workers` - Specify worker count (default: auto-detect)
+    - `--iterations` - Number of tasks per scenario (default: 100)
+    - `--export` - Export results (json, csv, markdown)
+  - Comprehensive performance metrics:
+    - Total execution time
+    - Average time per task
+    - Throughput (tasks/second)
+    - Peak memory usage
+  - Configuration options in `config/parallel.php`:
+    - `PARALLEL_BENCHMARKING_ENABLED` - Enable/disable benchmarking (default: true)
+    - `PARALLEL_BENCHMARK_ITERATIONS` - Default iterations (default: 100)
+    - `PARALLEL_BENCHMARK_WORKERS` - Default workers (default: null/auto-detect)
+  - Support for custom benchmark scenarios with extensible architecture
+  - Export capabilities for CI/CD integration and performance tracking
+
+### Documentation
+- Added comprehensive benchmarking guide at `docs/benchmarking.md`
+  - Quick start guide and usage examples
+  - Detailed explanation of all benchmark scenarios
+  - Metrics interpretation and performance analysis
+  - Custom scenario creation tutorial
+  - CI/CD integration examples
+  - Troubleshooting and performance tips
+
+### Testing
+- Added comprehensive test suite for benchmarking system:
+  - Unit tests for `BenchmarkResult` value object (10 tests)
+  - Unit tests for `BenchmarkRunner` orchestrator (8 tests)
+  - Unit tests for all four scenario implementations (30+ tests)
+  - Feature tests for end-to-end benchmarking (12 tests)
+  - Command tests for `ParallelBenchmarkCommand` (14 tests)
+  - Total: 74 new tests for benchmarking functionality
+
+### Quality Assurance
+- **PHPStan Level 9 Verification**: Confirmed package already compliant with PHPStan Level 9 (maximum strictness)
+  - Configuration uses `level: max` in `phpstan.neon.dist`
+  - All 32 source files pass strictest analysis with 0 errors
+  - Strict type safety with `declare(strict_types=1)` throughout codebase
+  - Full return type declarations and parameter type hints
+  - Readonly properties and PHP 8.2+ features utilized
+- **Test Coverage Analysis**: Comprehensive coverage audit performed
+  - Current coverage: **71.2%** (325 tests passing, 61 skipped)
+  - Previous documentation indicated 77.5% (now corrected)
+  - Added 7 new test cases for `CpuDetector` edge scenarios
+  - Identified coverage gaps in platform-specific code requiring mocking
+  - Target: 75-78% realistic without major refactoring
+  - Detailed analysis in `docs/pdca/coverage/plan.md` and `docs/pdca/phpstan9/plan.md`
+
+### Testing
+- Enhanced `CpuDetectorTest` with additional edge case coverage:
+  - Environment variable detection scenarios
+  - Concurrent detection request handling
+  - Cache management across multiple instances
+  - Boundary validation for CPU core counts
+  - Cross-OS family detection verification
+
 ## [1.1.1] - 2025-11-11
 
 ### Added
@@ -101,6 +170,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - FAQ section covering common use cases
 - Contributing guidelines for community contributions
 
-[Unreleased]: https://github.com/laravel-parallel/laravel-parallel/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/laravel-parallel/laravel-parallel/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/laravel-parallel/laravel-parallel/compare/v1.1.1...v1.2.0
+[1.1.1]: https://github.com/laravel-parallel/laravel-parallel/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/laravel-parallel/laravel-parallel/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/laravel-parallel/laravel-parallel/releases/tag/v1.0.0
